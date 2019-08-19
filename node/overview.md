@@ -8,6 +8,14 @@ The official Nodejs SDK for making both Account and Card charges
 
 {% include notes.html content="this is a sample note" %}
 
+** NOTES
+
+<div class="notes">
+Testing notes style
+</div>
+
+** END NOTE
+
 
 Step 1
 ------
@@ -61,8 +69,3 @@ var payload = {
 };
 ```
 
-**NOTES
-
-<div class="notes">
-Testing notes style
-</div>
