@@ -58,7 +58,8 @@ var payload = {
             "IP": "355426087298442",
             "txRef": "MC-7663-YU",
             "device_fingerprint": "69e6b7f0b72037aa8428b70fbe03986c"
-};```
+};
+```
 
 <div class="notes">
 Testing notes style
