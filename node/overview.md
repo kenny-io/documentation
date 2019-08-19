@@ -13,35 +13,34 @@ Step 1
 ------
 Install rave in your project
 
-
-{% highlight javascript %}
+```
 npm install ravepay
-{% endhighlight %}
+```
 
 Step 2
 ------
 
-{% highlight javascript %}
+```
 var Ravepay = require('ravepay');
 var rave = new Ravepay(PUBLICK_KEY, SECRET_KEY, PRODUCTION_FLAG);
-{% endhighlight %}
+```
 
 **If you pass true as the value for PRODUCTION_FLAG, the library will use the production url
 as the base for all calls. Otherwise it will use the staging base url;**
 
 
-{% highlight javascript %}
+```
 var rave = new Ravepay(PUBLICK_KEY, SECRET_KEY, PRODUCTION_FLAG); //Base url is 'http://'
 var rave = new Ravepay(PUBLICK_KEY, SECRET_KEY, true); //Base url is 'http://api.ravepay.co'
-{% endhighlight %}
+```
 
-
+`throwing this in there`
 
 ### Step 3
 **To charge a card, construct an object with the payment details and pass to
 ravePay Card charge method.**
 
-{% highlight javascript %}
+```
 var payload = {
             "cardno": "5438898014560229",
             "cvv": "789",
@@ -59,5 +58,4 @@ var payload = {
             "IP": "355426087298442",
             "txRef": "MC-7663-YU",
             "device_fingerprint": "69e6b7f0b72037aa8428b70fbe03986c"
-};
-{% endhighlight %}
+};```
