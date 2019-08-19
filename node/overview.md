@@ -6,7 +6,6 @@ Getting Started With The Nodejs SDK
 ==================
 The official Nodejs SDK for making both Account and Card charges
 
-{% include notes.html content="this is a sample note" %}
 
 ** NOTES
 
