@@ -1,15 +1,32 @@
 # Transfer Overview
 
-Learn about Transfers, a seamless way to pay using Rave in multiple currencies.
----
+Learn about Transfers, a seamless way to payout using Rave in multiple currencies.
+***
 
-# Ravepay Nodejs Library v1.0.0
 
-Getting Started With The Nodejs SDK
-==================
-The official Nodejs SDK for making both Account and Card charges
 
-![PIN FLOW](/assets/images/Slide1.png)
+
+
+![3D FLOW](/assets/images/Slide2.png)
+
+
+With Rave, you can initiate single and bulk transfers to bank accounts and mobile money accounts across Africa. Make transfers to vendors, partners or marketplace merchants all from your rave profile or via API. 
+
+You can either use the money you have earned as income i.e. Money collected from your customer's using rave or fund your balance on rave to initiate transfers to bank accounts & mobile money wallets in:
+
+- `Nigeria` 
+- `United States`
+- `Ghana`  
+- `Kenya` 
+- `Uganda` 
+- `Tanzania`
+- `Rwanda`
+- `South Africa`
+- `Zambia`
+- `Ivory Coast`
+
+Transfers can be done from the dashboard or using our [APIs](https://flutterwavedevelopers.readme.io/v2.0/reference#how-transfers-work). We would describe the process to complete a transfer on your rave dashboard below.
+
 
 ** NOTES
 
