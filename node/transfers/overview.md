@@ -8,7 +8,8 @@ Learn about Transfers, a seamless way to payout using Rave in multiple currencie
 
 
 
-![3D FLOW](/assets/images/Slide2.png)
+![3D FLOW](../assets/images/Slide1.png)
+
 
 
 With Rave, you can initiate single and bulk transfers to bank accounts and mobile money accounts across Africa. Make transfers to vendors, partners or marketplace merchants all from your rave profile or via API. 
