@@ -6,7 +6,7 @@ Getting Started With The Nodejs SDK
 ==================
 The official Nodejs SDK for making both Account and Card charges
 
-![PIN FLOW](/assets/images/slide1.png)
+![PIN FLOW](/assets/images/Slide1.png)
 
 ** NOTES
 
