@@ -8,7 +8,7 @@ Learn about Transfers, a seamless way to payout using Rave in multiple currencie
 
 
 
-![3D FLOW](../assets/images/Slide1.png)
+![3D FLOW](assets/images/Slide1.png)
 
 
 
