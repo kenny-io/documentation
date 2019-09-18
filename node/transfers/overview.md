@@ -71,7 +71,7 @@ Step 3: Create a transfer recipient
 **To charge a card, construct an object with the payment details and pass to
 ravePay Card charge method.**
 
-{% highlight javascript %}
+```
 var payload = {
             "cardno": "5438898014560229",
             "cvv": "789",
@@ -90,7 +90,7 @@ var payload = {
             "txRef": "MC-7663-YU",
             "device_fingerprint": "69e6b7f0b72037aa8428b70fbe03986c"
 };
-{% endhighlight %}
+```
 
 
 Step 4: Get the transfer fee
