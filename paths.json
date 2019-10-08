@@ -1,19 +1,18 @@
 {
-  "transfers": [
-    {
-      "title": "Overview (php)",
+  "transfers": {
+    "php": [
+      { 
+        "title": "Overview (php)",
       "identifier": "php",
       "url": "/php/transfers/overview.md"
-      
-    },
-    {
-      "title": "Quick Start (php)",
+      },
+      { 
+        "title": "Quick Start (php)",
       "identifier": "php",
-      "url": "php/transfers/quickstart.md"
-      
-    },
-    {
-      "title": "Completing a transfer (php)",
+      "url": "php/transfers/quickstart.md" 
+	  },
+	  {
+		 "title": "Completing a transfer (php)",
       "identifier": "php",
       "subfolderitems": [
         {
@@ -28,58 +27,64 @@
           "url": "/php/transfers/bulktransfer.md"
           
         }
-      ]
-    },
-    {
+      ] 
+	  },
+	  {
       "title": "Going Live (php).",
       "identifier": "php",
       "url": "/php/transfers/goinglive.md"
       
-    },
-    {
-      "title": "Overview",
+    }
+    ],
+    "node": [
+      { 
+        "title": "Overview (node)",
       "identifier": "node",
       "url": "/node/transfers/overview.md"
-      
-    },
-    {
-      "title": "Quick Start",
+      },
+      { 
+        "title": "Quick Start (node)",
       "identifier": "node",
-      "url": "/node/transfers/quickstart.md"
-      
-    },
-    {
-      "title": "Completing a transfer",
+      "url": "node/transfers/quickstart.md" 
+	  },
+	  {
+		 "title": "Completing a transfer (node)",
       "identifier": "node",
       "subfolderitems": [
         {
-          "title": "Single Transfers",
+          "title": "Single Transfers (node)",
           "identifier": "node",
           "url": "/node/transfers/singletransfer.md"
           
         },
         {
-          "title": "Bulk transfers",
+          "title": "Bulk transfers (node)",
           "identifier": "node",
           "url": "/node/transfers/bulktransfer.md"
           
         }
-      ]
-    },
-    {
-      "title": "Going Live.",
+      ] 
+	  },
+	  {
+      "title": "Going Live (node).",
       "identifier": "node",
       "url": "/node/transfers/goinglive.md"
       
-    },
-    {
-      "title": "Quick Start (python)",
+    }
+	],
+	"python": [
+      { 
+        "title": "Overview (python)",
       "identifier": "python",
-      "url": "/python/transfers/quickstart.md"
-      
-    },
-    {
-      "title": "Completing a transfer (python)",
+      "url": "/python/transfers/overview.md"
+      },
+      { 
+        "title": "Quick Start (python)",
+      "identifier": "python",
+      "url": "python/transfers/quickstart.md" 
+	  },
+	  {
+		 "title": "Completing a transfer (python)",
       "identifier": "python",
       "subfolderitems": [
         {
@@ -94,20 +99,23 @@
           "url": "/python/transfers/bulktransfer.md"
           
         }
-      ]
-    },
-    {
+      ] 
+	  },
+	  {
       "title": "Going Live (python).",
       "identifier": "python",
       "url": "/python/transfers/goinglive.md"
       
     }
-  ],
-  "subscriptions": [
-		{
+    ]
+
+  },
+  "subscriptions": {
+    "php": [
+      {
 			"title": "Overview (php)",
 			"identifier": "php",
-			"url": "/transfer.md"
+			"url": "php/transfers/overview.md"
 			
 		},
 		{
@@ -133,8 +141,10 @@
 			"identifier": "php",
 			"url": "/node/transfers/goinglive.md"
 			
-		},
-		{
+		}
+    ],
+    "node": [
+      {
 			"title": "Overview (node)",
 			"identifier": "node",
 			"url": "/node/transfers/overview.md"
@@ -163,8 +173,10 @@
 			"identifier": "node",
 			"url": "/node/transfers/goinglive.md"
 			
-		},
-		{
+		}
+	],
+	"python": [
+      {
 			"title": "Overview (python)",
 			"identifier": "python",
 			"url": "/node/transfers/overview.md"
@@ -194,9 +206,12 @@
 			"url": "/node/transfers/goinglive.md"
 			
 		}
-  ],
-  "split-payment": [
-		{
+    ]
+
+  },
+  "split-payment": {
+    "php": [
+      {
 			"title": "Overview (php)",
 			"identifier": "php",
 			"url": "/node/transfers/overview.md"
@@ -219,8 +234,10 @@
 			"identifier": "php",
 			"url": "/node/transfers/singletransfer.md"
 			
-		},
-		{
+		}
+    ],
+    "node": [
+      {
 			"title": "Overview (node)",
 			"identifier": "phnodep",
 			"url": "/node/transfers/overview.md"
@@ -243,8 +260,10 @@
 			"identifier": "node",
 			"url": "/node/transfers/singletransfer.md"
 			
-		},
-		{
+		}
+	],
+	"python": [
+      {
 			"title": "Overview (python)",
 			"identifier": "python",
 			"url": "/node/transfers/overview.md"
@@ -268,9 +287,12 @@
 			"url": "/node/transfers/singletransfer.md"
 			
 		}
-  ],
-  "bills": [
-		{
+    ]
+
+  },
+   "bills": {
+    "php": [
+      {
 			"title": "Overview (php)",
 			"identifier": "php",
 			"url": "/node/transfers/overview.md"
@@ -293,8 +315,10 @@
 			"identifier": "php",
 			"url": "/node/transfers/singletransfer.md"
 			
-		},
-		{
+		}
+    ],
+    "node": [
+      {
 			"title": "Overview (node)",
 			"identifier": "node",
 			"url": "/node/transfers/overview.md"
@@ -315,84 +339,12 @@
 		{
 			"title": "Go Live (node)",
 			"identifier": "node",
-			"url": "/node/transfers/singletransfer.md"
-			
-		},
-		{
-			"title": "Overview (python)",
-			"identifier": "python",
-			"url": "/node/transfers/overview.md"
-			
-		},
-		{
-			"title": "Quick Start (python)",
-			"identifier": "python",
-			"url": "/node/transfers/quickstart.md"
-			
-		},
-		{
-			"title": "BVN Validation (python)",
-			"identifier": "python",
-			"url": "/node/transfers/quickstart.md"
-			
-		},
-		{
-			"title": "Go Live (python)",
-			"identifier": "python",
 			"url": "/node/transfers/singletransfer.md"
 			
 		}
 	],
-  "identity": [
-		{
-			"title": "Overview (php)",
-			"identifier": "php",
-			"url": "/node/transfers/overview.md"
-			
-		},
-		{
-			"title": "Quick Start (php)",
-			"identifier": "php",
-			"url": "/node/transfers/quickstart.md"
-			
-		},
-		{
-			"title": "BVN Validation (php)",
-			"identifier": "php",
-			"url": "/node/transfers/quickstart.md"
-			
-		},
-		{
-			"title": "Go Live (php)",
-			"identifier": "php",
-			"url": "/node/transfers/singletransfer.md"
-			
-		},
-		{
-			"title": "Overview (node)",
-			"identifier": "node",
-			"url": "/node/transfers/overview.md"
-			
-		},
-		{
-			"title": "Quick Start (node)",
-			"identifier": "node",
-			"url": "/node/transfers/quickstart.md"
-			
-		},
-		{
-			"title": "BVN Validation (node)",
-			"identifier": "node",
-			"url": "/node/transfers/quickstart.md"
-			
-		},
-		{
-			"title": "Go Live (node)",
-			"identifier": "node",
-			"url": "/node/transfers/singletransfer.md"
-			
-		},
-		{
+	"python": [
+      {
 			"title": "Overview (python)",
 			"identifier": "python",
 			"url": "/node/transfers/overview.md"
@@ -416,5 +368,88 @@
 			"url": "/node/transfers/singletransfer.md"
 			
 		}
-	]
+    ]
+
+  },
+  "identity": {
+    "php": [
+      {
+			"title": "Overview (php)",
+			"identifier": "php",
+			"url": "/node/transfers/overview.md"
+			
+		},
+		{
+			"title": "Quick Start (php)",
+			"identifier": "php",
+			"url": "/node/transfers/quickstart.md"
+			
+		},
+		{
+			"title": "BVN Validation (php)",
+			"identifier": "php",
+			"url": "/node/transfers/quickstart.md"
+			
+		},
+		{
+			"title": "Go Live (php)",
+			"identifier": "php",
+			"url": "/node/transfers/singletransfer.md"
+			
+		}
+    ],
+    "node": [
+      {
+			"title": "Overview (node)",
+			"identifier": "node",
+			"url": "/node/transfers/overview.md"
+			
+		},
+		{
+			"title": "Quick Start (node)",
+			"identifier": "node",
+			"url": "/node/transfers/quickstart.md"
+			
+		},
+		{
+			"title": "BVN Validation (node)",
+			"identifier": "node",
+			"url": "/node/transfers/quickstart.md"
+			
+		},
+		{
+			"title": "Go Live (node)",
+			"identifier": "node",
+			"url": "/node/transfers/singletransfer.md"
+			
+		}
+	],
+	"python": [
+      {
+			"title": "Overview (python)",
+			"identifier": "python",
+			"url": "/node/transfers/overview.md"
+			
+		},
+		{
+			"title": "Quick Start (python)",
+			"identifier": "python",
+			"url": "/node/transfers/quickstart.md"
+			
+		},
+		{
+			"title": "BVN Validation (python)",
+			"identifier": "python",
+			"url": "/node/transfers/quickstart.md"
+			
+		},
+		{
+			"title": "Go Live (python)",
+			"identifier": "python",
+			"url": "/node/transfers/singletransfer.md"
+			
+		}
+    ]
+
+  }
 }
