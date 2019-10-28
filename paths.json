@@ -9,7 +9,7 @@
       { 
         "title": "Quick Start (php)",
       "identifier": "php",
-      "url": "php/transfers/quickstart.md" 
+      "url": "/php/transfers/quickstart.md" 
 	  },
 	  {
 		 "title": "Completing a transfer (php)",
@@ -45,7 +45,7 @@
       { 
         "title": "Quick Start (node)",
       "identifier": "node",
-      "url": "node/transfers/quickstart.md" 
+      "url": "/node/transfers/quickstart.md" 
 	  },
 	  {
 		 "title": "Completing a transfer (node)",
@@ -81,7 +81,7 @@
       { 
         "title": "Quick Start (python)",
       "identifier": "python",
-      "url": "python/transfers/quickstart.md" 
+      "url": "/python/transfers/quickstart.md" 
 	  },
 	  {
 		 "title": "Completing a transfer (python)",
@@ -115,7 +115,7 @@
       {
 			"title": "Overview (php)",
 			"identifier": "php",
-			"url": "php/transfers/overview.md"
+			"url": "/php/transfers/overview.md"
 			
 		},
 		{
