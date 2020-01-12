@@ -1,9 +1,9 @@
 # Overview
 
-    With Rave, merchants can resell payment services such as airtime in Nigeria, Ghana and the US and cable television (DStv) in Nigeria and Ghana. For every successful airtime sale, a merchant gets to make a 3% commission and for every other successful bill transaction, a commission of 30 NGN. To use our bill payment APIs you would need to follow the prerequisites below:
+With Rave, merchants can resell payment services such as airtime in Nigeria, Ghana and the US. They can also resell cable television (DStv) in Nigeria and Ghana. For every successful airtime sale, a merchant makes a 3% commission and a commission of NGN 30 for every other successful bill transaction. To use our bill payment APIs you would need to follow the steps outlined below:
 
 
-1. Sign-up for a test account here, and for a live account here .
+1. Create a [free Rave account](https://rave.flutterwave.com) to get access to our API's. You can switch your account between `test` and `live` modes (for use in development and in production) respectively.
 2. Navigate to the `Transfers` page on your dashboard and top up your balance using the Top up balance option.
 3. Ensure your available balance is funded before making use of the APIs.
 
@@ -11,8 +11,11 @@
 
 ## Bill payment endpoints
 
-Staging: https://ravesandboxapi.flutterwave.com/v2/services/confluence
-Live: https://api.ravepay.co/v2/services/confluence
+For Staging: https://ravesandboxapi.flutterwave.com/v2/services/confluence 
+
+For Live: https://api.ravepay.co/v2/services/confluence
+
+> Ensure that the API keys you use matches the endpoint you're calling.
 
 
 ## Available Bill Services
@@ -29,6 +32,7 @@ Live: https://api.ravepay.co/v2/services/confluence
 
 
 ## Request Structure
+This is a sample request format for calling the bills payment API
 
 ```javascript
    
@@ -36,8 +40,8 @@ Live: https://api.ravepay.co/v2/services/confluence
     
     request.post(' https://api.ravepay.co/v2/services/confluence', {
         json: {
-            "secret_key": "<YOUR SECRET KEY>",
-            "service": "bills_categories",
+            "secret_key": "<YOUR_SECRET_KEY>",
+            "service": "fly_buy",
             "service_method": "post",
             "service_version": "v1",
             "service_channel": "rave",
@@ -51,278 +55,63 @@ Live: https://api.ravepay.co/v2/services/confluence
                 "BillerName": "AIRTIME"
             }
         }
-    }, (error, res, body) => {
+    }, (error, response, body) => {
         if (error) {
             console.error(error)
             return
         }
-        console.log(`statusCode: ${res.statusCode}`)
+        console.log(`statusCode: ${response.statusCode}`)
         console.log(body)
     })
 
 ```
-
-## Response Structure
-
-```javascript
-    JSON
-    {
-        "status": "success",
-        "message": "SERVICE-RESPONSE",
-        "data": {
-            "Status": "success",
-            "Message": "Successful",
-            "Data": [
-                {
-                    "Id": 1,
-                    "BillerCode": "BIL099",
-                    "Name": "MTN NIgeria",
-                    "DefaultCommission": 0.02,
-                    "DateAdded": "2018-07-03T00:00:00Z",
-                    "Country": "NG",
-                    "IsAirtime": true,
-                    "BillerName": "AIRTIME",
-                    "ItemCode": "AT099",
-                    "ShortName": "MTN",
-                    "Fee": 0,
-                    "CommissionOnFee": false,
-                    "RegExpression": "^[+]{1}[0-9]+$",
-                    "LabelName": "Mobile Number"
-                },
-                {
-                    "Id": 2,
-                    "BillerCode": "BIL099",
-                    "Name": "GLO Nigeria",
-                    "DefaultCommission": 0.025,
-                    "DateAdded": "2018-07-03T00:00:00Z",
-                    "Country": "NG",
-                    "IsAirtime": true,
-                    "BillerName": "AIRTIME",
-                    "ItemCode": "AT099",
-                    "ShortName": "GLO",
-                    "Fee": 0,
-                    "CommissionOnFee": false,
-                    "RegExpression": "^[+]{1}[0-9]+$",
-                    "LabelName": "Mobile Number"
-                },
-                {
-                    "Id": 3,
-                    "BillerCode": "BIL099",
-                    "Name": "9Mobile",
-                    "DefaultCommission": 0.025,
-                    "DateAdded": "2018-07-03T00:00:00Z",
-                    "Country": "NG",
-                    "IsAirtime": true,
-                    "BillerName": "AIRTIME",
-                    "ItemCode": "AT099",
-                    "ShortName": "9mobile",
-                    "Fee": 0,
-                    "CommissionOnFee": false,
-                    "RegExpression": "^[+]{1}[0-9]+$",
-                    "LabelName": "Mobile Number"
-                },
-                {
-                    "Id": 4,
-                    "BillerCode": "BIL099",
-                    "Name": "Airtel Nigeria",
-                    "DefaultCommission": 0.025,
-                    "DateAdded": "2018-07-03T00:00:00Z",
-                    "Country": "NG",
-                    "IsAirtime": true,
-                    "BillerName": "AIRTIME",
-                    "ItemCode": "AT099",
-                    "ShortName": "Airtel",
-                    "Fee": 0,
-                    "CommissionOnFee": false,
-                    "RegExpression": "^[+]{1}[0-9]+$",
-                    "LabelName": "Mobile Number"
-                },
-                {
-                    "Id": 5,
-                    "BillerCode": "BIL132",
-                    "Name": "Airtime",
-                    "DefaultCommission": 0.025,
-                    "DateAdded": "2018-08-17T00:00:00Z",
-                    "Country": "GH",
-                    "IsAirtime": true,
-                    "BillerName": "AIRTIME",
-                    "ItemCode": "AT217",
-                    "ShortName": "Airtime",
-                    "Fee": 0,
-                    "CommissionOnFee": false,
-                    "RegExpression": "^[+]{1}[0-9]+$",
-                    "LabelName": "Mobile Number"
-                },
-                {
-                    "Id": 6,
-                    "BillerCode": "BIL135",
-                    "Name": "Airtime",
-                    "DefaultCommission": 0.025,
-                    "DateAdded": "2018-08-17T00:00:00Z",
-                    "Country": "US",
-                    "IsAirtime": true,
-                    "BillerName": "AIRTIME",
-                    "ItemCode": "AT219",
-                    "ShortName": "Airtime",
-                    "Fee": 0,
-                    "CommissionOnFee": false,
-                    "RegExpression": "^[+]{1}[0-9]+$",
-                    "LabelName": "Mobile Number"
-                },
-                {
-                    "Id": 7,
-                    "BillerCode": "BIL119",
-                    "Name": "DSTV Payment",
-                    "DefaultCommission": 0.3,
-                    "DateAdded": "2018-08-17T00:00:00Z",
-                    "Country": "NG",
-                    "IsAirtime": false,
-                    "BillerName": "DSTV",
-                    "ItemCode": "CB140",
-                    "ShortName": "DSTV",
-                    "Fee": 100,
-                    "CommissionOnFee": true,
-                    "RegExpression": "^[0-9]+$",
-                    "LabelName": "Smart Card Number"
-                },
-                {
-                    "Id": 8,
-                    "BillerCode": "BIL137",
-                    "Name": "DSTV Payment",
-                    "DefaultCommission": 0,
-                    "DateAdded": "2018-08-17T00:00:00Z",
-                    "Country": "GH",
-                    "IsAirtime": false,
-                    "BillerName": "DSTV",
-                    "ItemCode": "CB226",
-                    "ShortName": "DSTV",
-                    "Fee": 0,
-                    "CommissionOnFee": false,
-                    "RegExpression": "^[0-9]+$",
-                    "LabelName": "Smart card Number"
-                },
-                {
-                    "Id": 9,
-                    "BillerCode": "BIL119",
-                    "Name": "DSTV BoxOffice",
-                    "DefaultCommission": 0.3,
-                    "DateAdded": "2018-08-17T00:00:00Z",
-                    "Country": "NG",
-                    "IsAirtime": false,
-                    "BillerName": "DSTV BOX OFFICE",
-                    "ItemCode": "CB140",
-                    "ShortName": "Box Office",
-                    "Fee": 100,
-                    "CommissionOnFee": true,
-                    "RegExpression": "^[0-9]+$",
-                    "LabelName": "Smart Card Number"
-                },
-                {
-                    "Id": 10,
-                    "BillerCode": "BIL127",
-                    "Name": "LCC Lekki",
-                    "DefaultCommission": 0.3,
-                    "DateAdded": "2019-02-20T00:00:00Z",
-                    "Country": "NG",
-                    "IsAirtime": false,
-                    "BillerName": "LCC",
-                    "ItemCode": "UB224",
-                    "ShortName": "LCC Lekki-Epe Expressway",
-                    "Fee": 100,
-                    "CommissionOnFee": true,
-                    "RegExpression": "^[0-9\\-]+$",
-                    "LabelName": "LCC Account Number"
-                },
-                {
-                    "Id": 11,
-                    "BillerCode": "BIL127",
-                    "Name": "LCC Ikoyi",
-                    "DefaultCommission": 0.3,
-                    "DateAdded": "2019-02-20T00:00:00Z",
-                    "Country": "NG",
-                    "IsAirtime": false,
-                    "BillerName": "LCC",
-                    "ItemCode": "UB225",
-                    "ShortName": "LCC Ikoyi Bridge",
-                    "Fee": 100,
-                    "CommissionOnFee": true,
-                    "RegExpression": "^[0-9\\-]+$",
-                    "LabelName": "Lcc Account Number"
-                },
-                {
-                    "Id": 13,
-                    "BillerCode": "BIL112",
-                    "Name": "EKO PREPAID",
-                    "DefaultCommission": 0.3,
-                    "DateAdded": "2019-03-20T00:00:00Z",
-                    "Country": "NG",
-                    "IsAirtime": false,
-                    "BillerName": "EKO DISCO BILLS",
-                    "ItemCode": "UB157",
-                    "ShortName": "EKO PREPAID",
-                    "Fee": 100,
-                    "CommissionOnFee": true,
-                    "RegExpression": "^[0-9]$+",
-                    "LabelName": "Meter Number"
-                },
-                {
-                    "Id": 14,
-                    "BillerCode": "BIL112",
-                    "Name": "EKO PPOSTPAID",
-                    "DefaultCommission": 0.3,
-                    "DateAdded": "2019-02-03T00:00:00Z",
-                    "Country": "NG",
-                    "IsAirtime": false,
-                    "BillerName": "EKO DISCO BLLS",
-                    "ItemCode": "UB158",
-                    "ShortName": "EKO POSTPAID",
-                    "Fee": 100,
-                    "CommissionOnFee": true,
-                    "RegExpression": "^[0-9]$",
-                    "LabelName": "Meter Number"
-                }
-            ]
-        }
-    }
-```
 ## Parameters
+These are the parameter definitions for the above request
 
 
 | Parameter                         | Required               | Description                               |
 | :------------------------------   | :--------------------  | :---------------------------------------- |
-| `secret_key`                      | True                   | This is your merchant secret key. Please  |
-                                                               see our section on API Keys to learn how 
-                                                               to retrieve your secret key.              
-| `service`                         | True                   | This is the bill payment service you want 
-                                                               to use. Please see the list below with
-                                                               an explanation of available services.
-                                                               e.g. `fly_buy` , `fly_recurring`, etc
+| `secret_key`                      | True                   | This is your merchant secret key. See our [API keys section](https://developer.flutterwave.com/reference-link/api-keys-1) to learn how to retreive your secret_key             
+| `service`                         | True                   | This is the bill payment service. See the table below for our available services and their descriptions. e.g: `fly_buy`, `fly_recurring` etc.
 | `service_method`                  | True                   | This is the HTTP Method for the required  |                                                                    service.
-| `service_version`                 | True                   | This is the version for the APIs ...      |
-                                                               please set to v1, when a new version 
-                                                               is available you would be able to 
-                                                               specify your required version.
-| `service_channel`                 | True                   | This is the channel for the service,      |
-                                      Expected value: `rave`   always use rave as the value.
-| `service_payload`                 | False                  | This is the request to be sent for the    |
-|                                   |                        | service.                                  |
-
-
-
-
-
-
-
+| `service_version`                 | True                   | This is the API version. The current value is `v1`. When a new version of this API is available, you would be able to update to your preferred version.
+| `service_channel`                 | True                   | This is the channel for the service, always use `rave`as the value. 
+| `service_payload`                 | True                   | This is the request to be sent for the service.
 
 
 ## Bill Payment Services
+These are the available services on Rave with their respective HTTP methods and descriptions.
 
 
-- `fly_buy` `[POST]`: This allows you to buy airtime or DSTV bill services. When you pass this as your `service` in the request, you would need to pass a `service_payload` as well.
-- `fly_buy_bulk` `[POST]`: This allows you to buy bulk airtime and DSTV bill services.
-- `fly_recurring` `[GET]`: This allows you to retrieve active recurring airtime and DSTV bill services.
-- `fly_recurring_cancel` `[POST]`: This allows you to cancel recurring airtime and DSTV bill services.
-- `fly_history` `[POST]`: This allows you to retrieve a history of all purchased bill services including commission earned.
-- `fly_requery` `[POST]`: This allows you get the status of a bill purchase.
-- `bill_categories` `[POST]`: This allows you to get a list of individual bill categories.
-- `bills_validate` `[POST]`: This allows you to validate services like DSTV Smartcard number.
+| Service                         | Method               | Description                               |
+| :------------------------------   | :--------------------  | :---------------------------------------- |
+| `fly_buy`                      | POST                   | This allows you to buy airtime or DSTV bill services. When you pass this as your `service` in the request, you would need to pass a `service_payload` as well.   
+| `fly_buy_bulk`                      | POST                   | This allows you to buy bulk airtime and DSTV bill services.  
+| `fly_recurring`                      | GET                   | This allows you to retrieve active recurring airtime and DSTV bill services.
+| `fly_recurring_cancel`                      | POST                   | This allows you to cancel recurring airtime and DSTV bill services.   
+| `fly_history`                      | POST                   | This allows you to retrieve a history of all purchased bill services including commission earned.  
+| `fly_requery`                      | POST                   | This allows you get the status of a bill purchase.  
+| `bill_categories`                      | POST                   | This allows you to get a list of individual bill categories.  
+| `bills_validate`                      | POST                   | This allows you to validate services like DSTV Smartcard number
+
+## Response Structure
+This is a sample response you can expect for the sample request initiated above
+
+```JSON
+    {
+      "status": "success",
+      "message": "SERVICE-RESPONSE",
+      "data": {
+        "MobileNumber": "+23490803840303",
+        "Amount": 500,
+        "Network": "9MOBILE",
+        "TransactionReference": "CF-FLYAPI-20190822093219730987",
+        "PaymentReference": "BPUSSD15665095405052159977",
+        "BatchReference": null,
+        "ExtraData": null,
+        "Status": "success",
+        "Message": "Bill Payment was completed successfully",
+        "Reference": null
+      }
+    }
+```
