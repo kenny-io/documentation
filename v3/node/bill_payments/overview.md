@@ -1,9 +1,9 @@
 # Overview
 
-With Rave, merchants can resell payment services such as airtime in Nigeria, Ghana and the US. They can also resell cable television (DStv) in Nigeria and Ghana. For every successful airtime sale, a merchant makes a 3% commission and a commission of NGN 30 for every other successful bill transaction. To use our bill payment APIs you would need to follow the steps outlined below:
+With Flutterwave, merchants can resell payment services such as airtime in countries like Nigeria, Ghana and USA. They can also resell cable television (DStv) in Nigeria and Ghana. For every successful airtime sale, a merchant makes a 3% commission from the transaction. They also make a commission of NGN 30 for every other successful bill transaction. To use our bill payment APIs you would need to follow the steps outlined below:
 
 
-1. Create a [free Rave account](https://rave.flutterwave.com) to get access to our API's. You can switch your account between `test` and `live` modes (for use in development and in production) respectively.
+1. Create a [free Flutterwave account](https://dashboard.flutterwave.com/signup) to get access to our API's. You can switch your account between `test` and `live` modes (for use in development and in production) respectively.
 2. Navigate to the `Transfers` page on your dashboard and top up your balance using the Top up balance option.
 3. Ensure your available balance is funded before making use of the APIs.
 
@@ -32,38 +32,36 @@ For Live: https://api.ravepay.co/v2/services/confluence
 
 
 ## Request Structure
-This is a sample request format for calling the bills payment API
+This is a sample request format for calling the bills payment API for the `fly_buy` service. The request will defer depending on the service.
 
 ```javascript
-   
-    var request = require('request')
+var request = require('request')
     
-    request.post(' https://api.ravepay.co/v2/services/confluence', {
-        json: {
-            "secret_key": "<YOUR_SECRET_KEY>",
-            "service": "fly_buy",
-            "service_method": "post",
-            "service_version": "v1",
-            "service_channel": "rave",
-            "service_payload": {
-                "Country": "NG",
-                "CustomerId": "+23490803840303",
-                "Reference": "9300049404444",
-                "Amount": 500,
-                "RecurringType": 0,
-                "IsAirtime": true,
-                "BillerName": "AIRTIME"
-            }
+request.post(' https://api.ravepay.co/v2/services/confluence', {
+    json: {
+        "secret_key": "<YOUR_SECRET_KEY>",
+        "service": "fly_buy",
+        "service_method": "post",
+        "service_version": "v1",
+        "service_channel": "rave",
+        "service_payload": {
+            "Country": "NG",
+            "CustomerId": "+23490803840303",
+            "Reference": "9300049404444",
+            "Amount": 500,
+            "RecurringType": 0,
+            "IsAirtime": true,
+            "BillerName": "AIRTIME"
         }
-    }, (error, response, body) => {
-        if (error) {
-            console.error(error)
-            return
-        }
-        console.log(`statusCode: ${response.statusCode}`)
-        console.log(body)
-    })
-
+    }
+}, (error, response, body) => {
+    if (error) {
+        console.error(error)
+        return
+    }
+    console.log(`statusCode: ${response.statusCode}`)
+    console.log(body)
+})
 ```
 ## Parameters
 These are the parameter definitions for the above request
@@ -71,16 +69,16 @@ These are the parameter definitions for the above request
 
 | Parameter                         | Required               | Description                               |
 | :------------------------------   | :--------------------  | :---------------------------------------- |
-| `secret_key`                      | True                   | This is your merchant secret key. See our [API keys section](https://developer.flutterwave.com/reference-link/api-keys-1) to learn how to retreive your secret_key             
+| `secret_key`                      | True                   | This is your merchant secret key. See our [API keys section](https://developer.flutterwave.com/reference-link/api-keys-1) to learn how to retreive your secret_key.             
 | `service`                         | True                   | This is the bill payment service. See the table below for our available services and their descriptions. e.g: `fly_buy`, `fly_recurring` etc.
-| `service_method`                  | True                   | This is the HTTP Method for the required  |                                                                    service.
+| `service_method`                  | True                   | This is the HTTP Method for the required service.
 | `service_version`                 | True                   | This is the API version. The current value is `v1`. When a new version of this API is available, you would be able to update to your preferred version.
 | `service_channel`                 | True                   | This is the channel for the service, always use `rave`as the value. 
-| `service_payload`                 | True                   | This is the request to be sent for the service.
+| `service_payload`                 | True                   | This is the request payload to be sent for the service.
 
 
 ## Bill Payment Services
-These are the available services on Rave with their respective HTTP methods and descriptions.
+These are the available services on Flutterwave with their respective HTTP methods and descriptions.
 
 
 | Service                         | Method               | Description                               |
@@ -95,23 +93,23 @@ These are the available services on Rave with their respective HTTP methods and 
 | `bills_validate`                      | POST                   | This allows you to validate services like DSTV Smartcard number
 
 ## Response Structure
-This is a sample response you can expect for the sample request initiated above
+This is a sample response you can expect for the sample request initiated above when the request is successful.
 
 ```JSON
-    {
-      "status": "success",
-      "message": "SERVICE-RESPONSE",
-      "data": {
-        "MobileNumber": "+23490803840303",
-        "Amount": 500,
-        "Network": "9MOBILE",
-        "TransactionReference": "CF-FLYAPI-20190822093219730987",
-        "PaymentReference": "BPUSSD15665095405052159977",
-        "BatchReference": null,
-        "ExtraData": null,
-        "Status": "success",
-        "Message": "Bill Payment was completed successfully",
-        "Reference": null
-      }
-    }
+{
+  "status": "success",
+  "message": "SERVICE-RESPONSE",
+  "data": {
+    "MobileNumber": "+23490803840303",
+    "Amount": 500,
+    "Network": "9MOBILE",
+    "TransactionReference": "CF-FLYAPI-20190822093219730987",
+    "PaymentReference": "BPUSSD15665095405052159977",
+    "BatchReference": null,
+    "ExtraData": null,
+    "Status": "success",
+    "Message": "Bill Payment was completed successfully",
+    "Reference": null
+  }
+}
 ```
