@@ -57,7 +57,7 @@ The table below defines the parameters and descriptions of the `service_payload`
 ### Sample Response
 Below is an example of the response you'll get if your request is successful:
 
-```javascript
+```JSON
 {
   "status": "success",
   "message": "SERVICE-RESPONSE",
@@ -168,16 +168,16 @@ The table below defines the parameters and descriptions of the `service_payload`
 |------------------	|----------	|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
 | `BatchReference` 	| True 	| This is a reference that identifies the batch request being made for bulk requests. 	|
 | `CallBackUrl` 	| True 	| This is an endpoint supplied by you the developer/merchant so we can send a response when each request in the bulk collection is completed. 	|
-| `Requests` 	| True 	| This is an array containing each individual request in the batch. 	|
+| `Requests` 	| True 	| This is an array containing each request in the batch. 	|
 | `Country` 	| True 	| This is the country attached to the service being bought e.g. if `isAirtime` is `true` and `country` is `NG` it means you are buying airtime in Nigeria. Country can be these set of options `NG`, `GH` or `US` 	|
 | `CustomerId` 	| True 	| This is the customer detail. For airtime the value must be the customer's phone number and for DSTV it must be the customer's smartcard number. 	|
 | `Amount` 	| True 	| This is the amount for the service you would like to buy. 	|
-| `RecurringType` 	| True 	| This determines if you are buying a service recurrently or not. When the value is:  	|
+| `RecurringType` 	| True 	| This determines if you are buying a service recurrently or not. When the value is:
 |  	|  	| `0` - This is a one-time payment. 	|
 |  	|  	| `1` - This is an hourly payment. 	|
-|  	|  	| `2` - This is a daily payment. 	|
+|  	|  	| `2` - This is a daily payment. 	
 |  	|  	| `3` - This is a weekly payment. 	|
-|  	|  	| `4` - This is a monthly payment. 	|
+|  	|  	| `4` - This is a monthly payment. 
 | `IsAirtime` 	| True 	| Set this flag to `true` for airtime payments and `false` for dstv and non airtime payments. 	|
 | `BillerName` 	| True 	| Pass the following possible values based on the service being bought. `AIRTIME`, `DSTV`, `DSTV BOX OFFICE`. 	|
 | `Reference` 	| False 	| This is a unique reference passed by the developer to identify transactions on their end.
@@ -185,7 +185,7 @@ The table below defines the parameters and descriptions of the `service_payload`
 ##Sample Response
 Below is an example of the response you'll get if your request is successful:
 
-```javascript
+```JSON
 {
     "status": "success",
     "message": "SERVICE-RESPONSE",

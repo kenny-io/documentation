@@ -1,114 +1,88 @@
 # Quickstart
+This document covers the request implementation examples for all our bill payment services. Here, you will find parameter definitions for all the sample requests we'll create for each service. You will also find the sample responses for each of those requests.
 
-**Bill Payments**
+## Bill Payment Services
+These are the available bill payment services on Flutterwave with their respective HTTP methods and descriptions.
 
-**Services included:**
 
+| Service                         | Method               | Description                               |
+| :------------------------------   | :--------------------  | :---------------------------------------- |
+| `fly_buy`                      | POST                   | This allows you to buy airtime or DSTV bill services. When you pass this as your `service` in the request, you would need to pass a `service_payload` as well.   
+| `fly_buy_bulk`                      | POST                   | This allows you to buy bulk airtime and DSTV bill services.  
+| `fly_recurring`                      | GET                   | This allows you to retrieve active recurring airtime and DSTV bill services.
+| `fly_recurring_cancel`                      | POST                   | This allows you to cancel recurring airtime and DSTV bill services.   
+| `fly_history`                      | POST                   | This allows you to retrieve a history of all purchased bill services including commission earned.  
+| `fly_requery`                      | GET                   | This allows you get the status of a bill purchase.  
+| `bill_categories`                      | GET                   | This allows you to get a list of individual bill categories.  
+| `bills_validate`                      | GET                   | This allows you to validate services like DSTV Smartcard number
 
-- `fly_buy`   [POST]
-- `fly_buy_bulk`  [POST]
-- `fly_recurring`  [GET]
-- `fly_recurring_cancel`  [POST]
-- `fly_history`  [POST]
-- `fly_requery`  [POST]
-- `bill_categories`  [POST]
-- `bill_validate`   [POST]
+### `fly_buy`
 
-**`fly_buy`**
-
-This allows you to buy Airtime, DSTV bill services. When you pass this as your `service` in the request you would need to pass a `service_payload` as well.
-
-```javascript
-
-    var request = require('request')
-    
-    request.post(' https://api.ravepay.co/v2/services/confluence', {
-        json: {
-            "secret_key": "<YOUR SECRET KEY>",
-            "service": "fly_buy",
-            "service_method": "post",
-            "service_version": "v1",
-            "service_channel": "rave",
-            "service_payload": {
-                "Country": "NG",
-                "CustomerId": "+23490803840303",
-                "Reference": "9300049404444",
-                "Amount": 500,
-                "RecurringType": 0,
-                "IsAirtime": true,
-                "BillerName": "AIRTIME"
-            }
-        }
-    }, (error, res, body) => {
-        if (error) {
-            console.error(error)
-            return
-        }
-        console.log(`statusCode: ${res.statusCode}`)
-        console.log(body)
-    })
-
-```
-
-Below is a sample response:
+This allows you to buy Airtime, DSTV bill services. When you pass `fly_buy` as your `service` in the request you would need to equally pass a `service_payload` parameter to define the bill payment options.
 
 ```javascript
-    {
-      "status": "success",
-      "message": "SERVICE-RESPONSE",
-      "data": {
-        "MobileNumber": "+2349082930030",
-        "Amount": 500,
-        "Network": "9MOBILE",
-        "TransactionReference": "CF-FLYAPI-20190822093219730987",
-        "PaymentReference": "BPUSSD15665095405052159977",
-        "BatchReference": null,
-        "ExtraData": null,
-        "Status": "success",
-        "Message": "Bill Payment was completed successfully",
-        "Reference": null
-      }
-    }
-```
-
-Two scenarios could lead to an error message being returned:
-
- An invalid customer ID: 
-
- ```javascript
-    
-    {
-      "Status": "fail",
-      "Message": "Invalid customer id",
-      "Code": "903",
-      "CustomerReference": "+2339026420185"
-    }
-
- ```
-
- Or an invalid phone number:
-
-```javascript
-
-{
-  "Status": "fail",
-  "Message": "Invalid Phone",
-  "Code": "905",
-  "CustomerReference": "+190830030"
-}
-```
-
-**`fly_buy_bulk`**
-
-This allows you to buy bulk Airtime and DSTV bill services.
-
-```javascript
-
 var request = require('request')
 
 request.post(' https://api.ravepay.co/v2/services/confluence', {
     json: {
-        "secret_key": "<YOUR SECRET KEY>",
+        "secret_key": "<YOUR_SECRET_KEY>",
+        "service": "fly_buy",
+        "service_method": "post",
+        "service_version": "v1",
+        "service_channel": "rave",
+        "service_payload": { 
+            "Country": "NG",
+            "CustomerId": "+23490803840303",
+            "Reference": "9300049404444",
+            "Amount": 500,
+            "RecurringType": 0,
+            "IsAirtime": true,
+            "BillerName": "AIRTIME"
+        }
+    }
+}, (error, response, body) => {
+    if (error) {
+        console.error(error)
+        return
+    }
+    console.log(`statusCode: ${response.statusCode}`)
+    console.log(body)
+})
+```
+
+### Sample Response
+Below is an example of the response you'll get if your request is successful:
+
+```JSON
+{
+  "status": "success",
+  "message": "SERVICE-RESPONSE",
+  "data": {
+    "MobileNumber": "+23490803840303",
+    "Amount": 500,
+    "Network": "9MOBILE",
+    "TransactionReference": "CF-FLYAPI-20190822093219730987",
+    "PaymentReference": "BPUSSD15665095405052159977",
+    "BatchReference": null,
+    "ExtraData": null,
+    "Status": "success",
+    "Message": "Bill Payment was completed successfully",
+    "Reference": null
+  }
+}
+```
+
+### `fly_buy_bulk`
+
+The `fly_buy_bulk` service allows you to buy bulk Airtime or DSTV bill services. Here's a sample request to buy bulk airtime for three different phone numbers.
+
+
+```javascript
+var request = require('request')
+    
+request.post(' https://api.ravepay.co/v2/services/confluence', {
+    json: {
+        "secret_key": "<YOUR_SECRET_KEY>",
         "service": "fly_buy_bulk",
         "service_method": "post",
         "service_version": "v1",
@@ -128,7 +102,7 @@ request.post(' https://api.ravepay.co/v2/services/confluence', {
                 {
                     "Country": "GH",
                     "CustomerId": "+233276081163",
-                    "Amount": 10,
+                    "Amount": 500,
                     "RecurringType": 0,
                     "IsAirtime": true,
                     "BillerName": "AIRTIME",
@@ -146,20 +120,22 @@ request.post(' https://api.ravepay.co/v2/services/confluence', {
             ]
         }
     }
-}, (error, res, body) => {
+}, (error, response, body) => {
     if (error) {
         console.error(error)
         return
     }
-    console.log(`statusCode: ${res.statusCode}`)
+    console.log(`statusCode: ${response.statusCode}`)
     console.log(body)
 })
+
 ```
 
-Below is a sample response:
 
-```javascript
+### Sample Response
+The callback returns a response for each transaction in the batch. Below is an example of the response you'll get if your request is successful:
 
+```JSON
 {
     "status": "success",
     "message": "SERVICE-RESPONSE",
@@ -177,76 +153,70 @@ Below is a sample response:
 }
 ```
 
-Two scenarios could lead to an error message being returned:
+### `fly_recurring`
 
- An invalid customer ID: 
+`fly_recurring` is a service that allows you to retrieve details of all active recurring Airtime and DSTV bill services. Here's a sample request structure:
 
 ```javascript
-
-    {
-      "Status": "fail",
-      "Message": "Invalid customer id",
-      "Code": "903",
-      "CustomerReference": "+2339026420185"
+var request = require("request");
+    
+var options = {
+    method: 'GET',
+    url: 'https://api.ravepay.co/v2/services/confluence',
+    qs: {
+        "secret_key": "<YOUR_SECRET_KEY>",
+        "service": "fly_recurring",
+        "service_method": "get",
+        "service_version": "v1",
+        "service_channel" : "rave"
+    },
+    headers: {
+        'content-type': 'application/json'
     }
+};
+    
+request(options, function(error, response, body) {
+    if (error) throw new Error(error);
+    
+    console.log(body);
+});
 
 ```
+### Sample Response
+This is a sample response for the `fly_recurring` service when your request is successful:
 
-Or an invalid phone number:
-
-```javascript
-
-    {
-      "Status": "fail",
-      "Message": "Invalid Phone",
-      "Code": "905",
-      "CustomerReference": "+190830030"
+```JSON
+{
+    "status": "success",
+    "message": "SERVICE-RESPONSE",
+    "data": {
+        "RecurringPayments": [
+            {
+                "Id": 5,
+                "UniqueReference": "+2349082930030",
+                "Amount": 500,
+                "DateStarted": "2018-08-24T05:35:18.587Z",
+                "DateStopped": null,
+                "NextRun": "2018-08-24T06:35:18.587Z",
+                "RecurringType": "Hourly"
+            }
+        ],
+        "Status": "success",
+        "Message": "successful",
+        "Reference": null
     }
-
+}
 ```
+### `fly_recurring_cancel` 
 
-**`fly_recurring`**
-
-This allows you to retrieve details of active recurring Airtime and DSTV bill services.
+The `fly_recurring_cancel` service makes it possible to cancel recurring Airtime and DSTV bill services. Here's a sample request to cancel a recurring payment with `Id` 383.
 
 ```javascript
-
-    var request = require("request");
-    
-    var options = {
-        method: 'GET',
-        url: 'https://api.ravepay.co/v2/services/confluence',
-        qs: {
-            "secret_key": "<YOUR SECRET KEY>",
-            "service": "fly_recurring",
-            "service_method": "get",
-            "service_version": "v1",                ? ? ?
-            "service_channel" : "rave"
-        },
-        headers: {
-            'content-type': 'application/json'
-        }
-    };
-    
-    request(options, function(error, response, body) {
-        if (error) throw new Error(error);
-    
-        console.log(body);
-    });
-
-```
-
-**fly_recurring_cancel**
-
-This allows you to cancel recurring Airtime and DSTV bill services.
-
-```javascript
-
 var request = require('request')
 
 request.post(' https://api.ravepay.co/v2/services/confluence', {
     json: {
-        "secret_key": "<YOUR SECRET KEY>",
+        "secret_key": "<YOUR_SECRET_KEY>",
         "service": "fly_recurring_cancel",
         "service_method": "post",
         "service_version": "v1",
@@ -266,17 +236,15 @@ request.post(' https://api.ravepay.co/v2/services/confluence', {
 })
 ```
 
-**`fly_history`**
-
-This allows you to retrieve a history of all purchased bill services including commission earned.
+### `fly_history`
+Flutterwave makes it possible for you to visualize all your purchased bill services including the commissions you've earned via the `fly_history` service. Below is a sample request:
 
 ```javascript
-
 var request = require('request')
 
 request.post(' https://api.ravepay.co/v2/services/confluence', {
     json: {
-        "secret_key": "<YOUR SECRET KEY>",
+        "secret_key": "<YOUR_SECRET_KEY>",
         "service": "fly_history",
         "service_method": "post",
         "service_version": "v1",
@@ -289,191 +257,91 @@ request.post(' https://api.ravepay.co/v2/services/confluence', {
             "Reference": "+233494850059"
         }
     }
-}, (error, res, body) => {
+}, (error, response, body) => {
     if (error) {
         console.error(error)
         return
     }
-    console.log(`statusCode: ${res.statusCode}`)
+    console.log(`statusCode: ${response.statusCode}`)
     console.log(body)
 })
 ```
 
-Below is a sample response:
+### Sample Response
+This is a sample response for the `fly_history` service when your request is successful:
 
-```javascript
-
-    {
-        "status": "success",
-        "message": "SERVICE-RESPONSE",
-        "data": {
-            "Summary": [
-                {
-                    "Currency": "NGN",
-                    "SumBills": 3500,
-                    "SumCommission": 40,
-                    "SumDstv": 0,
-                    "SumAirtime": 2000,
-                    "CountDstv": 0,
-                    "CountAirtime": 4
-                },
-                {
-                    "Currency": "KES",
-                    "SumBills": 0,
-                    "SumCommission": 0,
-                    "SumDstv": 0,
-                    "SumAirtime": 0,
-                    "CountDstv": 0,
-                    "CountAirtime": 0
-                },
-                {
-                    "Currency": "GHS",
-                    "SumBills": 0,
-                    "SumCommission": 0,
-                    "SumDstv": 0,
-                    "SumAirtime": 0,
-                    "CountDstv": 0,
-                    "CountAirtime": 0
-                },
-                {
-                    "Currency": "USD",
-                    "SumBills": 0,
-                    "SumCommission": 0,
-                    "SumDstv": 0,
-                    "SumAirtime": 0,
-                    "CountDstv": 0,
-                    "CountAirtime": 0
-                },
-                {
-                    "Currency": "EUR",
-                    "SumBills": 0,
-                    "SumCommission": 0,
-                    "SumDstv": 0,
-                    "SumAirtime": 0,
-                    "CountDstv": 0,
-                    "CountAirtime": 0
-                },
-                {
-                    "Currency": "ZAR",
-                    "SumBills": 0,
-                    "SumCommission": 0,
-                    "SumDstv": 0,
-                    "SumAirtime": 0,
-                    "CountDstv": 0,
-                    "CountAirtime": 0
-                },
-                {
-                    "Currency": "GBP",
-                    "SumBills": 0,
-                    "SumCommission": 0,
-                    "SumDstv": 0,
-                    "SumAirtime": 0,
-                    "CountDstv": 0,
-                    "CountAirtime": 0
-                },
-                {
-                    "Currency": "TZS",
-                    "SumBills": 0,
-                    "SumCommission": 0,
-                    "SumDstv": 0,
-                    "SumAirtime": 0,
-                    "CountDstv": 0,
-                    "CountAirtime": 0
-                },
-                {
-                    "Currency": "UGX",
-                    "SumBills": 0,
-                    "SumCommission": 0,
-                    "SumDstv": 0,
-                    "SumAirtime": 0,
-                    "CountDstv": 0,
-                    "CountAirtime": 0
-                }
-            ],
-            "Transactions": [
-                {
-                    "Currency": "NGN",
-                    "CustomerId": "+2349082930030",
-                    "Frequency": "Hourly",
-                    "Amount": "500.0000",
-                    "Product": "AIRTIME",
-                    "ProductName": "FLY-API-NG-AIRTIME-9MOBILE",
-                    "Commission": 10,
-                    "TransactionDate": "2018-08-24T05:35:07.213Z",
-                    "TransactionId": 7895
-                },
-                {
-                    "Currency": "NGN",
-                    "CustomerId": "+2349082930030",
-                    "Frequency": "One Time",
-                    "Amount": "500.0000",
-                    "Product": "AIRTIME",
-                    "ProductName": "FLY-API-NG-AIRTIME-9MOBILE",
-                    "Commission": 10,
-                    "TransactionDate": "2018-08-24T01:06:31.55Z",
-                    "TransactionId": 7891
-                },
-                {
-                    "Currency": "NGN",
-                    "CustomerId": "+2349082930030",
-                    "Frequency": "One Time",
-                    "Amount": "500.0000",
-                    "Product": "AIRTIME",
-                    "ProductName": "FLY-API-NG-AIRTIME-9MOBILE",
-                    "Commission": 10,
-                    "TransactionDate": "2018-08-23T16:56:07.193Z",
-                    "TransactionId": 7868
-                },
-                {
-                    "Currency": "NGN",
-                    "CustomerId": "+2349082930030",
-                    "Frequency": "One Time",
-                    "Amount": "500.0000",
-                    "Product": "AIRTIME",
-                    "ProductName": "FLY-API-NG-AIRTIME-9MOBILE",
-                    "Commission": 10,
-                    "TransactionDate": "2018-08-23T16:55:49.413Z",
-                    "TransactionId": 7867
-                }
-            ],
-            "Total": 4,
-            "Status": "success",
-            "Message": "Successful",
-            "Reference": null
-        }
+```JSON
+{
+    "status": "success",
+    "message": "SERVICE-RESPONSE",
+    "data": {
+        "Summary": [
+            {
+                "Currency": "NGN",
+                "SumBills": 3500,
+                "SumCommission": 40,
+                "SumDstv": 0,
+                "SumAirtime": 2000,
+                "CountDstv": 0,
+                "CountAirtime": 4
+            },
+            {
+                "Currency": "KES",
+                "SumBills": 0,
+                "SumCommission": 0,
+                "SumDstv": 0,
+                "SumAirtime": 0,
+                "CountDstv": 0,
+                "CountAirtime": 0
+            },
+        ],
+        "Transactions": [
+            {
+                "Currency": "NGN",
+                "CustomerId": "+2349082930030",
+                "Frequency": "Hourly",
+                "Amount": "500.0000",
+                "Product": "AIRTIME",
+                "ProductName": "FLY-API-NG-AIRTIME-9MOBILE",
+                "Commission": 10,
+                "TransactionDate": "2018-08-24T05:35:07.213Z",
+                "TransactionId": 7895
+            },
+            {
+                "Currency": "NGN",
+                "CustomerId": "+2349082930030",
+                "Frequency": "One Time",
+                "Amount": "500.0000",
+                "Product": "AIRTIME",
+                "ProductName": "FLY-API-NG-AIRTIME-9MOBILE",
+                "Commission": 10,
+                "TransactionDate": "2018-08-24T01:06:31.55Z",
+                "TransactionId": 7891
+            }
+        ],
+        "Total": 2,
+        "Status": "success",
+        "Message": "Successful",
+        "Reference": null
     }
-
+}
 ```
 
-Below is a sample error message
+### `fly_requery`
+
+The `fly_requery` service allows you to get the status of a particular bill purchase.
 
 ```javascript
-
-    {
-      "Status": "fail",
-      "Message": "Invalid customer id",
-      "Code": "903",
-      "CustomerReference": "+2339026420185"
-    }
-
-```
-
-**`fly_requery`**
-
-This allows you to get the status of a bill purchase
-
-```javascript
-
 var request = require("request");
 
 var options = {
     method: 'GET',
     url: 'https://api.ravepay.co/v2/services/confluence',
     qs: {
-        "secret_key": "<YOUR SECRET KEY>",
-        "service": "fly_requery_9300049404444", // Prefix "fly_requery_" plus your tra                                                    nsaction reference.
+        "secret_key": "<YOUR_SECRET_KEY>",
+        "service": "fly_requery_9300049404444", // Prefix "fly_requery_" plus the transaction reference of the bill your want to check its status.
         "service_method": "get",
-        "service_version": "v1",                ? ? ?
+        "service_version": "v1",
         "service_channel" : "rave"
     },
     headers: {
@@ -488,49 +356,48 @@ request(options, function(error, response, body) {
 });
 ```
 
-Below is a sample response:
+### Sample Response
+This is a sample `fly_requery` service response for a successful Mpesa transfer through Flutterwave:
 
-```javascript
-
-    {
-      "event.type": "Transfer",
-      "transfer": {
-        "id": 3455,
-        "account_number": "233509382427",
-        "bank_code": "MTN",
-        "fullname": "Kwame Abe",
-        "date_created": "2018-10-03T14:20:25.000Z",
-        "currency": "GHS",
-        "debit_currency": null,
-        "amount": 49.99,
-        "fee": 250,
-        "status": "SUCCESSFUL",
-        "reference": "rave-transfer-15028609",
-        "meta": null,
-        "narration": "Rave Mpesa transfer",
-        "approver": null,
-        "complete_message": "Approved Or Completed Successfully",
-        "requires_approval": 0,
-        "is_approved": 1,
-        "bank_name": "FA-BANK"
-      }
-    }
+```JSON
+{
+  "event.type": "Transfer",
+  "transfer": {
+    "id": 3455,
+    "account_number": "233509382427",
+    "bank_code": "MTN",
+    "fullname": "Kwame Abe",
+    "date_created": "2018-10-03T14:20:25.000Z",
+    "currency": "GHS",
+    "debit_currency": null,
+    "amount": 49.99,
+    "fee": 250,
+    "status": "SUCCESSFUL",
+    "reference": "rave-transfer-15028609",
+    "meta": null,
+    "narration": "Rave Mpesa transfer",
+    "approver": null,
+    "complete_message": "Approved Or Completed Successfully",
+    "requires_approval": 0,
+    "is_approved": 1,
+    "bank_name": "FA-BANK"
+  }
+}
 
 ```
 
-**`bill_categories`**
+### `bill_categories`
 
-This allows you to get a list of individual bill categories
+If you want to see a list of all the individual bill categories that is available on Flutterwave, you can do so using the `bill_categories` service in your request. Here's a sample request:
 
 ```javascript
-
 var request = require("request");
 
 var options = {
     method: 'GET',
     url: 'https://api.ravepay.co/v2/services/confluence',
     qs: {
-        "secret_key": "FLWSECK-e6db11d1f8a6208de8cb2f94e293450e-X",
+        "secret_key": "YOUR_SECRET_KEY",
         "service": "bills_categories",
         "service_method": "get",
         "service_version": "v1",
@@ -548,10 +415,10 @@ request(options, function(error, response, body) {
 });
 ```
 
-Below is a sample response
+### Sample Response
+This is a sample response for a successful `bill_categories` request on Flutterwave'bill payments API:
 
-```javascript
-
+```JSON
 {
     "status": "success",
     "message": "SERVICE-RESPONSE",
@@ -609,86 +476,6 @@ Below is a sample response
             },
             {
                 "Id": 4,
-                "BillerCode": "BIL099",
-                "Name": "Airtel Nigeria",
-                "DefaultCommission": 0.025,
-                "DateAdded": "2018-07-03T00:00:00Z",
-                "Country": "NG",
-                "IsAirtime": true,
-                "BillerName": "AIRTIME",
-                "ItemCode": "AT099",
-                "ShortName": "Airtel",
-                "Fee": 0,
-                "CommissionOnFee": false,
-                "RegExpression": "^[+]{1}[0-9]+$",
-                "LabelName": "Mobile Number"
-            },
-            {
-                "Id": 5,
-                "BillerCode": "BIL132",
-                "Name": "Airtime",
-                "DefaultCommission": 0.025,
-                "DateAdded": "2018-08-17T00:00:00Z",
-                "Country": "GH",
-                "IsAirtime": true,
-                "BillerName": "AIRTIME",
-                "ItemCode": "AT217",
-                "ShortName": "Airtime",
-                "Fee": 0,
-                "CommissionOnFee": false,
-                "RegExpression": "^[+]{1}[0-9]+$",
-                "LabelName": "Mobile Number"
-            },
-            {
-                "Id": 6,
-                "BillerCode": "BIL135",
-                "Name": "Airtime",
-                "DefaultCommission": 0.025,
-                "DateAdded": "2018-08-17T00:00:00Z",
-                "Country": "US",
-                "IsAirtime": true,
-                "BillerName": "AIRTIME",
-                "ItemCode": "AT219",
-                "ShortName": "Airtime",
-                "Fee": 0,
-                "CommissionOnFee": false,
-                "RegExpression": "^[+]{1}[0-9]+$",
-                "LabelName": "Mobile Number"
-            },
-            {
-                "Id": 7,
-                "BillerCode": "BIL119",
-                "Name": "DSTV Payment",
-                "DefaultCommission": 0.3,
-                "DateAdded": "2018-08-17T00:00:00Z",
-                "Country": "NG",
-                "IsAirtime": false,
-                "BillerName": "DSTV",
-                "ItemCode": "CB140",
-                "ShortName": "DSTV",
-                "Fee": 100,
-                "CommissionOnFee": true,
-                "RegExpression": "^[0-9]+$",
-                "LabelName": "Smart Card Number"
-            },
-            {
-                "Id": 8,
-                "BillerCode": "BIL137",
-                "Name": "DSTV Payment",
-                "DefaultCommission": 0,
-                "DateAdded": "2018-08-17T00:00:00Z",
-                "Country": "GH",
-                "IsAirtime": false,
-                "BillerName": "DSTV",
-                "ItemCode": "CB226",
-                "ShortName": "DSTV",
-                "Fee": 0,
-                "CommissionOnFee": false,
-                "RegExpression": "^[0-9]+$",
-                "LabelName": "Smart card Number"
-            },
-            {
-                "Id": 9,
                 "BillerCode": "BIL119",
                 "Name": "DSTV BoxOffice",
                 "DefaultCommission": 0.3,
@@ -703,103 +490,41 @@ Below is a sample response
                 "RegExpression": "^[0-9]+$",
                 "LabelName": "Smart Card Number"
             },
-            {
-                "Id": 10,
-                "BillerCode": "BIL127",
-                "Name": "LCC Lekki",
-                "DefaultCommission": 0.3,
-                "DateAdded": "2019-02-20T00:00:00Z",
-                "Country": "NG",
-                "IsAirtime": false,
-                "BillerName": "LCC",
-                "ItemCode": "UB224",
-                "ShortName": "LCC Lekki-Epe Expressway",
-                "Fee": 100,
-                "CommissionOnFee": true,
-                "RegExpression": "^[0-9\\-]+$",
-                "LabelName": "LCC Account Number"
-            },
-            {
-                "Id": 11,
-                "BillerCode": "BIL127",
-                "Name": "LCC Ikoyi",
-                "DefaultCommission": 0.3,
-                "DateAdded": "2019-02-20T00:00:00Z",
-                "Country": "NG",
-                "IsAirtime": false,
-                "BillerName": "LCC",
-                "ItemCode": "UB225",
-                "ShortName": "LCC Ikoyi Bridge",
-                "Fee": 100,
-                "CommissionOnFee": true,
-                "RegExpression": "^[0-9\\-]+$",
-                "LabelName": "Lcc Account Number"
-            },
-            {
-                "Id": 13,
-                "BillerCode": "BIL112",
-                "Name": "EKO PREPAID",
-                "DefaultCommission": 0.3,
-                "DateAdded": "2019-03-20T00:00:00Z",
-                "Country": "NG",
-                "IsAirtime": false,
-                "BillerName": "EKO DISCO BILLS",
-                "ItemCode": "UB157",
-                "ShortName": "EKO PREPAID",
-                "Fee": 100,
-                "CommissionOnFee": true,
-                "RegExpression": "^[0-9]$+",
-                "LabelName": "Meter Number"
-            },
-            {
-                "Id": 14,
-                "BillerCode": "BIL112",
-                "Name": "EKO PPOSTPAID",
-                "DefaultCommission": 0.3,
-                "DateAdded": "2019-02-03T00:00:00Z",
-                "Country": "NG",
-                "IsAirtime": false,
-                "BillerName": "EKO DISCO BLLS",
-                "ItemCode": "UB158",
-                "ShortName": "EKO POSTPAID",
-                "Fee": 100,
-                "CommissionOnFee": true,
-                "RegExpression": "^[0-9]$",
-                "LabelName": "Meter Number"
-            }
+            
+            { // More bill categories }
+
         ]
     }
 }
 ```
 
-**`bills_validate`**
+### `bills_validate`
 
-This allows you to validate serial or registration numbers pertaining to a particular service. An example is DSTV smart card number.
+Flutterwave let's you validate serial or registration numbers pertaining to a particular service using the `bills_validate` service. A good example would be trying to validate a DSTV smart card number first before giving value. Here's a sample request to do so
 
 ```javascript
-
-    var request = require("request");
+var request = require("request");
     
-    var options = {
-        method: 'GET',
-        url: 'https://api.ravepay.co/v2/services/confluence',
-        qs: {
-            "secret_key": "FLWSECK-e6db11d1f8a6208de8cb2f94e293450e-X",
-            "service": "bills_validate_CB140_BIL119_1025401152",
-            "service_method": "get",
-            "service_version": "v1",
-            "service_channel": "rave"
-        },
-        headers: {
-            'content-type': 'application/json'
-        }
-    };
+var options = {
+    method: 'GET',
+    url: 'https://api.ravepay.co/v2/services/confluence',
+    qs: {
+        "secret_key": "FLWSECK-e6db11d1f8a6208de8cb2f94e293450e-X",
+        "service": "bills_validate_CB140_BIL119_1025401152",
+        "service_method": "get",
+        "service_version": "v1",
+        "service_channel": "rave"
+    },
+    headers: {
+        'content-type': 'application/json'
+    }
+};
     
-    request(options, function(error, response, body) {
-        if (error) throw new Error(error);
+request(options, function(error, response, body) {
+    if (error) throw new Error(error);
     
-        console.log(body);
-    });
+    console.log(body);
+});
 
 ```
 
