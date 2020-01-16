@@ -509,7 +509,7 @@ var options = {
     method: 'GET',
     url: 'https://api.ravepay.co/v2/services/confluence',
     qs: {
-        "secret_key": "FLWSECK-e6db11d1f8a6208de8cb2f94e293450e-X",
+        "secret_key": "YOUR_SECRET_KEY",
         "service": "bills_validate_CB140_BIL119_1025401152",
         "service_method": "get",
         "service_version": "v1",
