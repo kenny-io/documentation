@@ -155,7 +155,7 @@ The callback returns a response for each transaction in the batch. Below is an e
 
 ### `fly_recurring`
 
-`fly_recurring` is a service that allows you to retrieve details of all active recurring Airtime and DSTV bill services. Here's a sample request structure:
+`fly_recurring` is a service that allows you to retrieve details of all active recurring Airtime and DSTV bill services. Here's a sample request:
 
 ```javascript
 var request = require("request");
