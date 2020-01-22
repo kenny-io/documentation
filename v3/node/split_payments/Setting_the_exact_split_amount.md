@@ -1,60 +1,67 @@
-# Setting the exact split amount
+# Setting exact split amount
 
-The default implementation for subaccounts, expects that you pass the value of the total amount to be charged from the customer as a commission and Rave calculates the amount to be sent to the subaccount based on the commission you set up. In a case where it's more than one subaccount, we ask that you pass a split ratio which divides the funds between the subaccounts based on the ratios specified.
+The default implementation for sub-accounts, expects that you pass the value of the total amount to be charged from the customer as a commission and Rave calculates the amount to be sent to the sub-account based on the commission you set up. In a case where it's more than one sub-account, we ask that you pass a split ratio which divides the funds between the sub-accounts based on the ratios specified.
 
-Should you want to specify a fixed amount to be passed to a subaccount, we created a payment flow that allows you pass the exact amount you want a customer's subaccount to receive. Here's how it works:
+Should you want to specify a fixed amount to be passed to a sub-account, we created a payment flow that allows you to pass the exact amount you want a sub-account to receive.
+
+## Pass exact split amount to a sub-account
+In cases where you want to pass an exact split amount to a sub-account, you need to specify that amount as the value of your `transaction_charge` in the `subaccounts[]` array. Here's a sample implementation:
 
 ```javascript
-    // One Subaccount
+// Sending fixed amount to a single sub-account
     
-    <form>
-        <script src="https://api.ravepay.co/flwv3-pug/getpaidx/api/flwpbf-inline.js"></script>
-        <button type="button" onClick="payWithRave()">Pay Now</button>
-    </form>
+<form>
+    <script src="https://api.ravepay.co/flwv3-pug/getpaidx/api/flwpbf-inline.js"></script>
+    <button type="button" onClick="payWithRave()">Pay Now</button>
+</form>
     
-    <script>
-        const API_publicKey = "<ADD YOUR PUBLIC KEY HERE>";
+<script>
+    const API_publicKey = "YOUR_PUBLIC_KEY";
     
-        function payWithRave() {
-            var x = getpaidSetup({
-                PBFPubKey: API_publicKey,
-                customer_email: "user@example.com",
-                amount: 2000,
-                currency: "NGN",
-                txref: "rave-123456",
-                subaccounts: [
-                  {
-                    id: "RS_D87A9EE339AE28BFA2AE86041C6DE70E", // This assumes you have setup your commission on the dashboard.
-                    transaction_charge: 1980,
-                    transaction_charge_type: "flat_subaccount"
-                  }
-                ],
-                meta: [{
-                    metaname: "flightID",
-                    metavalue: "AP1234"
-                }],
-                onclose: function() {},
-                callback: function(response) {
-                    var txref = response.tx.txRef; // collect flwRef returned and pass to                                                a server page to complete status check.
-                    console.log("This is the response returned after a charge", response);
-                    if (
-                        response.tx.chargeResponseCode == "00" ||
-                        response.tx.chargeResponseCode == "0"
-                    ) {
-                        // redirect to a success page
-                    } else {
-                        // redirect to a failure page.
-                    }
-    
-                    x.close(); // use this to close the modal immediately after payment.
+    function payWithRave() {
+        var x = getpaidSetup({
+            PBFPubKey: API_publicKey,
+            customer_email: "user@example.com",
+            amount: 2000,
+            currency: "NGN",
+            txref: "rave-123456",
+            subaccounts: [
+              {
+                id: "RS_D87A9EE339AE28BFA2AE86041C6DE70E", // This assumes you have setup your commission on the dashboard.
+                transaction_charge: 1500,
+                transaction_charge_type: "flat_subaccount"
+              }
+            ],
+            meta: [{
+                metaname: "flightID",
+                metavalue: "AP1234"
+            }],
+            onclose: function() {},
+            callback: function(response) {
+                var txref = response.tx.txRef; // collect flwRef returned and pass to                                                a server page to complete status check.
+                console.log("This is the response returned after a charge", response);
+                if (
+                    response.tx.chargeResponseCode == "00" ||
+                    response.tx.chargeResponseCode == "0"
+                ) {
+                    // redirect to a success page
+                } else {
+                    // redirect to a failure page.
                 }
-            });
-        }
-    </script>
+    
+                x.close(); // use this to close the modal immediately after payment.
+            }
+        });
+    }
+</script>
 ```
+> Notice that the `transaction_charge_type` has a value of `flat_subaccount` which specifies that the value of `transaction_charge` is the exact value we want the sub-account to receive. In this case, we expect that before you pass that amount to us, you would have calculated both the transaction processing fee and commission and deducted it from the amount you pass.
+
+## Pass exact split amount to multiple sub-accounts
+When splitting payment to multiple sub-accounts, Flutterwave makes it possible to specify exactly how much each sub-account should receive for every transaction. Here's a sample implementation:
 
 ```javascript
-// Multiple subaccounts
+// Sending fixed amount to multiple sub-accounts
 
 <form>
     <script src="https://api.ravepay.co/flwv3-pug/getpaidx/api/flwpbf-inline.js"></script>
@@ -62,7 +69,7 @@ Should you want to specify a fixed amount to be passed to a subaccount, we creat
 </form>
 
 <script>
-    const API_publicKey = "<ADD YOUR PUBLIC KEY HERE>";
+    const API_publicKey = "YOUR_PUBLIC_KEY";
 
     function payWithRave() {
         var x = getpaidSetup({
@@ -114,45 +121,4 @@ Should you want to specify a fixed amount to be passed to a subaccount, we creat
 </script>
 ```
 
-<div class="magic-block-callout type-info">
-
- ###   Handling the exact amount your subaccounts receive
-
-    As shown in the code sample above, please pass the amount you want your subaccount to get in the `subaccounts` array as `transaction_charge: "{amount}"` and pass the flag that indicates you are specifying the amount you expect the subaccount to receive by adding `transaction_charge_type: "flat_subaccount"`
-    
-    _PS: We expect that before you specify the amount, you have calculated the transaction processing fee and commission and it has been deducted from the amount specified._
-</div>
-
-Thus the subaccounts would get the value you specified in the  `transaction_charge` property after any transaction.
-
-# Parameters
-
-                                                                                              
-| Parameter                         | Required                  | Description                               |    
-| :------------------------------   | :--------------------     | :---------------------------------------- |
-| ```id```                          | True                      | This is the ID of the subaccount, you can |
-|                                   | (```String```)            | get it from your dashboard e.g.           |
-|                                   |                           | RS_D87A9EE339AE28BFA2AE86041C6DE70E       |
-|meta                               | True                      | This is the data that describes and gives |
-|                                   | (```String```)            | information about the subaccount          |
-|```transaction_split_ratio```      | False                     | This is the ratio value representing the  | 
-|                                   | (`String`)                | share of the amount you intend to give a  |  |                                   |                           | subaccount. This is only needed when:     |
-|                                   |                           | 1. You are splitting between more than    |
-|                                   |                           |    one subaccount.                        |
-|                                   |                           | 2. You are not passing the exact amount   |
-|                                   |                           |    you expect the subaccount to get.      |
-|```transaction_charge_type```      | False                     | This represents the type of commission    |
-|                                   |                           | you would like to charge.                 |
-|                                   |                           | 1. If you would like to charge a flat     |
-|                                   |                           |    fee pass the value as `flat`.          |
-|                                   |                           | 2. If you would like to charge a fee      |
-|                                   |                           |    based on a percentage basis, pass      |
-|                                   |                           |    the value as `percentage`.             |
-|                                   |                           |                                           |
-|                                   |                           |    When you pass this you override the    |
-|                                   |                           |    type set as commission when the        |
-|                                   |                           |    subaccount was created.                |
-|                                   |                           |    If you want to pass the exact amount   |
-|                                   |                           |    you expect a subaccount to get pass    |
-|                                   |                           |    the value as `flat_subaccount`         |
-|                                   |                           |                                           |
+In the example above we assume you have calculated the total amount to go to each sub-account minus the fees processing and commission fees. From the implementation above, the sub-accounts would get what you passed as  `transaction_charge` after any transaction. Hence, 1000, 100 and 400 respectively. 
