@@ -1,56 +1,62 @@
 # Quickstart
+
 This document covers the request implementation examples for all our bill payment services. Here, you will find parameter definitions for all the sample requests we'll create for each service. You will also find the sample responses for each of those requests.
 
 ## Bill Payment Services
+
 These are the available bill payment services on Flutterwave with their respective HTTP methods and descriptions.
 
-
-| Service                         | Method               | Description                               |
-| :------------------------------   | :--------------------  | :---------------------------------------- |
-| `fly_buy`                      | POST                   | This allows you to buy airtime or DSTV bill services. When you pass this as your `service` in the request, you would need to pass a `service_payload` as well.   
-| `fly_buy_bulk`                      | POST                   | This allows you to buy bulk airtime and DSTV bill services.  
-| `fly_recurring`                      | GET                   | This allows you to retrieve active recurring airtime and DSTV bill services.
-| `fly_recurring_cancel`                      | POST                   | This allows you to cancel recurring airtime and DSTV bill services.   
-| `fly_history`                      | POST                   | This allows you to retrieve a history of all purchased bill services including commission earned.  
-| `fly_requery`                      | GET                   | This allows you get the status of a bill purchase.  
-| `bill_categories`                      | GET                   | This allows you to get a list of individual bill categories.  
-| `bills_validate`                      | GET                   | This allows you to validate services like DSTV Smartcard number
+| Service                | Method | Description                                                                                                                                                    |
+| :--------------------- | :----- | :------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `fly_buy`              | POST   | This allows you to buy airtime or DSTV bill services. When you pass this as your `service` in the request, you would need to pass a `service_payload` as well. |
+| `fly_buy_bulk`         | POST   | This allows you to buy bulk airtime and DSTV bill services.                                                                                                    |
+| `fly_recurring`        | GET    | This allows you to retrieve active recurring airtime and DSTV bill services.                                                                                   |
+| `fly_recurring_cancel` | POST   | This allows you to cancel recurring airtime and DSTV bill services.                                                                                            |
+| `fly_history`          | POST   | This allows you to retrieve a history of all purchased bill services including commission earned.                                                              |
+| `fly_requery`          | POST   | This allows you get the status of a bill purchase.                                                                                                             |
+| `bill_categories`      | POST   | This allows you to get a list of individual bill categories.                                                                                                   |
+| `bills_validate`       | POST   | This allows you to validate services like DSTV Smartcard number                                                                                                |
 
 ### `fly_buy`
 
-This allows you to buy Airtime, DSTV bill services. When you pass `fly_buy` as your `service` in the request you would need to equally pass a `service_payload` parameter to define the bill payment options.
+This allows you to buy Airtime, and DSTV bill services. When you pass `fly_buy` as your `service` in the request you would need to equally pass a `service_payload` parameter to define the bill payment options.
 
 ```javascript
-var request = require('request')
+var request = require("request");
 
-request.post(' https://api.ravepay.co/v2/services/confluence', {
+request.post(
+  " https://api.ravepay.co/v2/services/confluence",
+  {
     json: {
-        "secret_key": "<YOUR_SECRET_KEY>",
-        "service": "fly_buy",
-        "service_method": "post",
-        "service_version": "v1",
-        "service_channel": "rave",
-        "service_payload": { 
-            "Country": "NG",
-            "CustomerId": "+23490803840303",
-            "Reference": "9300049404444",
-            "Amount": 500,
-            "RecurringType": 0,
-            "IsAirtime": true,
-            "BillerName": "AIRTIME"
-        }
+      secret_key: "YOUR_SECRET_KEY",
+      service: "fly_buy",
+      service_method: "post",
+      service_version: "v1",
+      service_channel: "rave",
+      service_payload: {
+        Country: "NG",
+        CustomerId: "+23490803840303",
+        Reference: "9300049404444",
+        Amount: 500,
+        RecurringType: 0,
+        IsAirtime: true,
+        BillerName: "AIRTIME"
+      }
     }
-}, (error, response, body) => {
+  },
+  (error, response, body) => {
     if (error) {
-        console.error(error)
-        return
+      console.error(error);
+      return;
     }
-    console.log(`statusCode: ${response.statusCode}`)
-    console.log(body)
-})
+    console.log(`statusCode: ${response.statusCode}`);
+    console.log(body);
+  }
+);
 ```
 
 ### Sample Response
+
 Below is an example of the response you'll get if your request is successful:
 
 ```JSON
@@ -76,63 +82,66 @@ Below is an example of the response you'll get if your request is successful:
 
 The `fly_buy_bulk` service allows you to buy bulk Airtime or DSTV bill services. Here's a sample request to buy bulk airtime for three different phone numbers.
 
-
 ```javascript
-var request = require('request')
-    
-request.post(' https://api.ravepay.co/v2/services/confluence', {
-    json: {
-        "secret_key": "<YOUR_SECRET_KEY>",
-        "service": "fly_buy_bulk",
-        "service_method": "post",
-        "service_version": "v1",
-        "service_channel": "rave",
-        "service_payload": {
-            "BatchReference": "batch-rave-150928302799933922",
-            "CallBackUrl": "https://rave-webhook.herokuapp.com/newregistration",
-            "Requests": [{
-                    "Country": "NG",
-                    "CustomerId": "+23490803840303",
-                    "Amount": 500,
-                    "RecurringType": 0,
-                    "IsAirtime": true,
-                    "BillerName": "AIRTIME",
-                    "Reference": "9300049404444"
-                },
-                {
-                    "Country": "GH",
-                    "CustomerId": "+233276081163",
-                    "Amount": 500,
-                    "RecurringType": 0,
-                    "IsAirtime": true,
-                    "BillerName": "AIRTIME",
-                    "Reference": "9300049405555"
-                },
-                {
-                    "Country": "US",
-                    "CustomerId": "+190830030",
-                    "Amount": 20,
-                    "RecurringType": 0,
-                    "IsAirtime": true,
-                    "BillerName": "AIRTIME",
-                    "Reference": "9300049406666"
-                }
-            ]
-        }
-    }
-}, (error, response, body) => {
-    if (error) {
-        console.error(error)
-        return
-    }
-    console.log(`statusCode: ${response.statusCode}`)
-    console.log(body)
-})
+var request = require("request");
 
+request.post(
+  " https://api.ravepay.co/v2/services/confluence",
+  {
+    json: {
+      secret_key: "<YOUR_SECRET_KEY>",
+      service: "fly_buy_bulk",
+      service_method: "post",
+      service_version: "v1",
+      service_channel: "rave",
+      service_payload: {
+        BatchReference: "batch-rave-150928302799933922",
+        CallBackUrl: "https://rave-webhook.herokuapp.com/newregistration",
+        Requests: [
+          {
+            Country: "NG",
+            CustomerId: "+23490803840303",
+            Amount: 500,
+            RecurringType: 0,
+            IsAirtime: true,
+            BillerName: "AIRTIME",
+            Reference: "9300049404444"
+          },
+          {
+            Country: "GH",
+            CustomerId: "+233276081163",
+            Amount: 500,
+            RecurringType: 0,
+            IsAirtime: true,
+            BillerName: "AIRTIME",
+            Reference: "9300049405555"
+          },
+          {
+            Country: "US",
+            CustomerId: "+190830030",
+            Amount: 20,
+            RecurringType: 0,
+            IsAirtime: true,
+            BillerName: "AIRTIME",
+            Reference: "9300049406666"
+          }
+        ]
+      }
+    }
+  },
+  (error, response, body) => {
+    if (error) {
+      console.error(error);
+      return;
+    }
+    console.log(`statusCode: ${response.statusCode}`);
+    console.log(body);
+  }
+);
 ```
 
-
 ### Sample Response
+
 The callback returns a response for each transaction in the batch. Below is an example of the response you'll get if your request is successful:
 
 ```JSON
@@ -159,30 +168,31 @@ The callback returns a response for each transaction in the batch. Below is an e
 
 ```javascript
 var request = require("request");
-    
-var options = {
-    method: 'GET',
-    url: 'https://api.ravepay.co/v2/services/confluence',
-    qs: {
-        "secret_key": "<YOUR_SECRET_KEY>",
-        "service": "fly_recurring",
-        "service_method": "get",
-        "service_version": "v1",
-        "service_channel" : "rave"
-    },
-    headers: {
-        'content-type': 'application/json'
-    }
-};
-    
-request(options, function(error, response, body) {
-    if (error) throw new Error(error);
-    
-    console.log(body);
-});
 
+var options = {
+  method: "POST",
+  url: "https://api.ravepay.co/v2/services/confluence",
+  qs: {
+    secret_key: "YOUR_SECRET_KEY",
+    service: "fly_recurring",
+    service_method: "get",
+    service_version: "v1",
+    service_channel: "rave"
+  },
+  headers: {
+    "content-type": "application/json"
+  }
+};
+
+request(options, function(error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
 ```
+
 ### Sample Response
+
 This is a sample response for the `fly_recurring` service when your request is successful:
 
 ```JSON
@@ -207,67 +217,78 @@ This is a sample response for the `fly_recurring` service when your request is s
     }
 }
 ```
-### `fly_recurring_cancel` 
+
+### `fly_recurring_cancel`
 
 The `fly_recurring_cancel` service makes it possible to cancel recurring Airtime and DSTV bill services. Here's a sample request to cancel a recurring payment with `Id` 383.
 
 ```javascript
-var request = require('request')
+var request = require("request");
 
-request.post(' https://api.ravepay.co/v2/services/confluence', {
+request.post(
+  " https://api.ravepay.co/v2/services/confluence",
+  {
     json: {
-        "secret_key": "<YOUR_SECRET_KEY>",
-        "service": "fly_recurring_cancel",
-        "service_method": "post",
-        "service_version": "v1",
-        "service_channel": "rave",
-        "service_payload": {
-            "CustomerMobile": "+23481056829830",
-            "RecurringPayment": 383 //Id of the recurring payment to be cancelled.
-        }
+      secret_key: "YOUR_SECRET_KEY",
+      service: "fly_recurring_cancel",
+      service_method: "post",
+      service_version: "v1",
+      service_channel: "rave",
+      service_payload: {
+        CustomerMobile: "+23481056829830",
+        RecurringPayment: 383 //Id of the recurring payment to be cancelled.
+      }
     }
-}, (error, res, body) => {
+  },
+  (error, res, body) => {
     if (error) {
-        console.error(error)
-        return
+      console.error(error);
+      return;
     }
-    console.log(`statusCode: ${res.statusCode}`)
-    console.log(body)
-})
+    console.log(`statusCode: ${res.statusCode}`);
+    console.log(body);
+  }
+);
 ```
 
 ### `fly_history`
+
 Flutterwave makes it possible for you to visualize all your purchased bill services including the commissions you've earned via the `fly_history` service. Below is a sample request:
 
 ```javascript
-var request = require('request')
+var request = require("request");
 
-request.post(' https://api.ravepay.co/v2/services/confluence', {
+request.post(
+  " https://api.ravepay.co/v2/services/confluence",
+  {
     json: {
-        "secret_key": "<YOUR_SECRET_KEY>",
-        "service": "fly_history",
-        "service_method": "post",
-        "service_version": "v1",
-        "service_channel": "rave",
-        "service_payload": {
-            "FromDate": "2018-08-01",
-            "ToDate": "2018-08-27",
-            "PageSize": 20,
-            "PageIndex": 0,
-            "Reference": "+233494850059"
-        }
+      secret_key: "YOUR_SECRET_KEY",
+      service: "fly_history",
+      service_method: "post",
+      service_version: "v1",
+      service_channel: "rave",
+      service_payload: {
+        FromDate: "2018-08-01",
+        ToDate: "2018-08-27",
+        PageSize: 20,
+        PageIndex: 0,
+        Reference: "+233494850059"
+      }
     }
-}, (error, response, body) => {
+  },
+  (error, response, body) => {
     if (error) {
-        console.error(error)
-        return
+      console.error(error);
+      return;
     }
-    console.log(`statusCode: ${response.statusCode}`)
-    console.log(body)
-})
+    console.log(`statusCode: ${response.statusCode}`);
+    console.log(body);
+  }
+);
 ```
 
 ### Sample Response
+
 This is a sample response for the `fly_history` service when your request is successful:
 
 ```JSON
@@ -335,28 +356,29 @@ The `fly_requery` service allows you to get the status of a particular bill purc
 var request = require("request");
 
 var options = {
-    method: 'GET',
-    url: 'https://api.ravepay.co/v2/services/confluence',
-    qs: {
-        "secret_key": "<YOUR_SECRET_KEY>",
-        "service": "fly_requery_9300049404444", // Prefix "fly_requery_" plus the transaction reference of the bill your want to check its status.
-        "service_method": "get",
-        "service_version": "v1",
-        "service_channel" : "rave"
-    },
-    headers: {
-        'content-type': 'application/json'
-    }
+  method: "POST",
+  url: "https://api.ravepay.co/v2/services/confluence",
+  qs: {
+    secret_key: "YOUR_SECRET_KEY",
+    service: "fly_requery_9300049404444", // Prefix "fly_requery_" plus the transaction reference of the bill your want to check its status.
+    service_method: "get",
+    service_version: "v1",
+    service_channel: "rave"
+  },
+  headers: {
+    "content-type": "application/json"
+  }
 };
 
 request(options, function(error, response, body) {
-    if (error) throw new Error(error);
+  if (error) throw new Error(error);
 
-    console.log(body);
+  console.log(body);
 });
 ```
 
 ### Sample Response
+
 This is a sample `fly_requery` service response for a successful Mpesa transfer through Flutterwave:
 
 ```JSON
@@ -394,28 +416,29 @@ If you want to see a list of all the individual bill categories that is availabl
 var request = require("request");
 
 var options = {
-    method: 'GET',
-    url: 'https://api.ravepay.co/v2/services/confluence',
-    qs: {
-        "secret_key": "YOUR_SECRET_KEY",
-        "service": "bills_categories",
-        "service_method": "get",
-        "service_version": "v1",
-        "service_channel": "rave"
-    },
-    headers: {
-        'content-type': 'application/json'
-    }
+  method: "POST",
+  url: "https://api.ravepay.co/v2/services/confluence",
+  qs: {
+    secret_key: "YOUR_SECRET_KEY",
+    service: "bills_categories",
+    service_method: "get",
+    service_version: "v1",
+    service_channel: "rave"
+  },
+  headers: {
+    "content-type": "application/json"
+  }
 };
 
 request(options, function(error, response, body) {
-    if (error) throw new Error(error);
+  if (error) throw new Error(error);
 
-    console.log(body);
+  console.log(body);
 });
 ```
 
 ### Sample Response
+
 This is a sample response for a successful `bill_categories` request on Flutterwave'bill payments API:
 
 ```JSON
@@ -490,7 +513,7 @@ This is a sample response for a successful `bill_categories` request on Flutterw
                 "RegExpression": "^[0-9]+$",
                 "LabelName": "Smart Card Number"
             },
-            
+
             { // More bill categories }
 
         ]
@@ -504,27 +527,25 @@ Flutterwave let's you validate serial or registration numbers pertaining to a pa
 
 ```javascript
 var request = require("request");
-    
+
 var options = {
-    method: 'GET',
-    url: 'https://api.ravepay.co/v2/services/confluence',
-    qs: {
-        "secret_key": "YOUR_SECRET_KEY",
-        "service": "bills_validate_CB140_BIL119_1025401152",
-        "service_method": "get",
-        "service_version": "v1",
-        "service_channel": "rave"
-    },
-    headers: {
-        'content-type': 'application/json'
-    }
+  method: "POST",
+  url: "https://api.ravepay.co/v2/services/confluence",
+  qs: {
+    secret_key: "YOUR_SECRET_KEY",
+    service: "bills_validate_CB140_BIL119_1025401152",
+    service_method: "get",
+    service_version: "v1",
+    service_channel: "rave"
+  },
+  headers: {
+    "content-type": "application/json"
+  }
 };
-    
+
 request(options, function(error, response, body) {
-    if (error) throw new Error(error);
-    
-    console.log(body);
+  if (error) throw new Error(error);
+
+  console.log(body);
 });
-
 ```
-
