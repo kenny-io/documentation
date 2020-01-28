@@ -1,177 +1,193 @@
-## php going live 
-# Rave PHP SDK :wink:
+# Transfer Recipients
 
-> Class documentation can be found here [https://flutterwave.github.io/Flutterwave-Rave-PHP-SDK/packages/Default.html](https://flutterwave.github.io/Flutterwave-Rave-PHP-SDK/packages/Default.html)
+If you have a list of transfer recipients, then the process of transfering money from your Flutterwave balance to the recipients accounts becomes faster. 
 
-Use this library to integrate your PHP app to Rave.
+###Create a transfer recipient 
+The first step to making a transfer is to create the transfer recipient. Basically, you would call our [create recipient endpoint](https://developer.flutterwave.com/reference#create-a-transfer-recipient) with the details of the recipient (Bank account no, Bank ISO) and your secret key. 
 
-Edit the `paymentForm.php` and `processPayment.php` files to suit your purpose. Both files are well documented.
+This recipient will be create on your account and assigned a unique reference. This is not a mandatory step as you can as well provide the recipient bank details while initiating a transfer, however, if you have an existing recipient, you can easily pass their `id` instead. 
+Here's a sample implementation for creating a recipient:
 
-Simply redirect to the `paymentForm.php` file on your browser to process a payment.
+##Change snippets to PHP
+```javascript
+var request = require('request')
+request.post('https://api.ravepay.co/v2/gpx/transfers/beneficiaries/create
+', {
+    json: {
+        "account_bank": "063",
+        "account_number": "00*****310",
+        "seckey": "YOUR_SECRET_KEY"
+	}
+}, (error, res, body) => {
+    if (error) {
+        console.error(error)
+        return
+    }
+    console.log(body)
+})
+``` 
+#### Request parameters
+The table below defines the parameters and descriptions of the request object we constructed above to create a new recipient. 
 
-The vendor folder is committed into the project to allow easy installation for those who do not have composer installed.
-It is recommended to update the project dependencies using;
+| Parameter 	| Required 	| Description 	|
+|-----------------	|----------	|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
+| `account_bank` 	| True 	| This is the recipient's bank ISO code, use this [List of Banks](https://developer.flutterwave.com/reference#list-of-banks) to retrieve a list of all supported banks with their respective ISO codes. Ex: "063", "044" etc. 	|
+| `account_number` 	| True 	| This is the bank account number of the recipient. 	|
+| `seckey` 	| True 	| This is your merchant secret key, see how to get your API keys from your dashboard [here](https://developer.flutterwave.com/reference#api-keys-1) | 
 
-```shell
-$ composer install
+
+#### Sample response
+Here's a sample response you will get when your recipient creation request is processed successfully: 
+
+```json
+{
+    "status": "success",
+    "message": "BENEFICIARY-CREATED",
+    "data": {
+        "id": 400570,
+        "account_number": "00*****310",
+        "bank_code": "063",
+        "fullname": "EKENE EZE",
+        "date_created": "2020-01-23T12:32:23.000Z",
+        "bank_name": "ACCESS BANK PLC (DIAMOND)"
+    }
+}
 ```
 
-## Sample implementation
+###List transfer recipients
+To view a list of all the available transfer recipients on your account, make a request to our [beneficiaries endpoint](https://developer.flutterwave.com/reference#fetch-recipients) with your merchant secret key. Here's a sample implementation:
+##Change snippets to PHP
+```javascript
+var request = require("request");
 
-In this implementation, we are expecting a form encoded POST request to this script.
-The request will contain the following parameters.
+var options = { method: 'GET',
+  url: 'https://api.ravepay.co/v2/gpx/transfers/beneficiaries',
+  qs: { 
+  	seckey: 'YOUR_SECRET_KEY' 
+  },
+  headers:
+   { 'content-type': 'application/json' } };
 
-- payment_method `Can be card, account, both`
-- description `Your transaction description`
-- logo `Your logo url`
-- title `Your transaction title`
-- country `Your transaction country`
-- currency `Your transaction currency`
-- email `Your customer's email`
-- firstname `Your customer's firstname`
-- lastname `Your customer's lastname`
-- phonenumber `Your customer's phonenumber`
-- pay_button_text `The payment button text you prefer`
-- ref `Your transaction reference. It must be unique per transaction.  By default, the Rave class generates a unique transaction reference for each transaction. Pass this parameter only if you uncommented the related section in the script below.`
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
 
-```php
-// Prevent direct access to this class
-define("BASEPATH", 1);
+  console.log(body);
+});
+```
 
-include('lib/rave.php');
-include('lib/raveEventHandlerInterface.php');
+###Sample response
+Flutterwave will return a response in this format to provide you more information about the recipients under your account:
 
-use Flutterwave\Rave;
-use Flutterwave\Rave\EventHandlerInterface;
-
-$URL = (isset($_SERVER['HTTPS']) ? 'https' : 'http') . '://'.$_SERVER[HTTP_HOST].$_SERVER[REQUEST_URI];
-$getData = $_GET;
-$postData = $_POST;
-$publicKey = '****YOUR**PUBLIC**KEY****'; // Remember to change this to your live public keys when going live
-$secretKey = '****YOUR**SECRET**KEY****'; // Remember to change this to your live secret keys when going live
-$env = 'staging'; // Remember to change this to 'live' when you are going live
-$prefix = 'MY_APP_NAME'; // Change this to the name of your business or app
-$overrideRef = false;
-
-// Uncomment here to enforce the useage of your own ref else a ref will be generated for you automatically
-// if($postData['ref']){
-//     $prefix = $postData['ref'];
-//     $overrideRef = true;
-// }
-
-$payment = new Rave($publicKey, $secretKey, $prefix, $env, $overrideRef);
-
-
-// This is where you set how you want to handle the transaction at different stages
-class myEventHandler implements EventHandlerInterface{
-    /**
-     * This is called when the Rave class is initialized
-     * */
-    function onInit($initializationData){
-        // Save the transaction to your DB.
-        echo 'Payment started......'.json_encode($initializationData).'<br />'; //Remember to delete this line
-    }
-    
-    /**
-     * This is called only when a transaction is successful
-     * */
-    function onSuccessful($transactionData){
-        // Get the transaction from your DB using the transaction reference (txref)
-        // Check if you have previously given value for the transaction. If you have, redirect to your successpage else, continue
-        // Comfirm that the transaction is successful
-        // Confirm that the chargecode is 00 or 0
-        // Confirm that the currency on your db transaction is equal to the returned currency
-        // Confirm that the db transaction amount is equal to the returned amount
-        // Update the db transaction record (includeing parameters that didn't exist before the transaction is completed. for audit purpose)
-        // Give value for the transaction
-        // Update the transaction to note that you have given value for the transaction
-        // You can also redirect to your success page from here
-        echo 'Payment Successful!'.json_encode($transactionData).'<br />'; //Remember to delete this line
-    }
-    
-    /**
-     * This is called only when a transaction failed
-     * */
-    function onFailure($transactionData){
-        // Get the transaction from your DB using the transaction reference (txref)
-        // Update the db transaction record (includeing parameters that didn't exist before the transaction is completed. for audit purpose)
-        // You can also redirect to your failure page from here
-        echo 'Payment Failed!'.json_encode($transactionData).'<br />'; //Remember to delete this line
-    }
-    
-    /**
-     * This is called when a transaction is requeryed from the payment gateway
-     * */
-    function onRequery($transactionReference){
-        // Do something, anything!
-        echo 'Payment requeried......'.$transactionReference.'<br />'; //Remember to delete this line
-    }
-    
-    /**
-     * This is called a transaction requery returns with an error
-     * */
-    function onRequeryError($requeryResponse){
-        // Do something, anything!
-        echo 'An error occured while requeying the transaction...'.json_encode($requeryResponse).'<br />'; //Remember to delete this line
-    }
-    
-    /**
-     * This is called when a transaction is canceled by the user
-     * */
-    function onCancel($transactionReference){
-        // Do something, anything!
-        // Note: Somethings a payment can be successful, before a user clicks the cancel button so proceed with caution
-        echo 'Payment canceled by user......'.$transactionReference.'<br />'; //Remember to delete this line
-    }
-    
-    /**
-     * This is called when a transaction doesn't return with a success or a failure response. This can be a timedout transaction on the Rave server or an abandoned transaction by the customer.
-     * */
-    function onTimeout($transactionReference, $data){
-        // Get the transaction from your DB using the transaction reference (txref)
-        // Queue it for requery. Preferably using a queue system. The requery should be about 15 minutes after.
-        // Ask the customer to contact your support and you should escalate this issue to the flutterwave support team. Send this as an email and as a notification on the page. just incase the page timesout or disconnects
-        echo 'Payment timeout......'.$transactionReference.' - '.json_encode($data).'<br />'; //Remember to delete this line
+```json
+{
+    "status": "success",
+    "message": "QUERIED-BENEFICIARIES",
+    "data": {
+        "page_info": {
+            "total": 2,
+            "current_page": 1,
+            "total_pages": 1
+        },
+        "payout_beneficiaries": [
+            {
+                "id": 400570,
+                "account_number": "00*****310",
+                "bank_code": "063",
+                "fullname": "EKENE EZE",
+                "meta": null,
+                "date_created": "2020-01-23T12:32:23.000Z",
+                "bank_name": "ACCESS BANK PLC (DIAMOND)"
+            },
+            {
+                "id": 400407,
+                "account_number": "01*****458",
+                "bank_code": "058",
+                "fullname": " EZE EKENE",
+                "meta": null,
+                "date_created": "2020-01-23T10:41:42.000Z",
+                "bank_name": "GTBANK PLC"
+            }
+        ]
     }
 }
 
-if($postData['amount']){
-    // Make payment
-    $payment
-    ->eventHandler(new myEventHandler)
-    ->setAmount($postData['amount'])
-    ->setPaymentMethod($postData['payment_method']) // value can be card, account or both
-    ->setDescription($postData['description'])
-    ->setLogo($postData['logo'])
-    ->setTitle($postData['title'])
-    ->setCountry($postData['country'])
-    ->setCurrency($postData['currency'])
-    ->setEmail($postData['email'])
-    ->setFirstname($postData['firstname'])
-    ->setLastname($postData['lastname'])
-    ->setPhoneNumber($postData['phonenumber'])
-    ->setPayButtonText($postData['pay_button_text'])
-    ->setRedirectUrl($URL)
-    // ->setMetaData(array('metaname' => 'SomeDataName', 'metavalue' => 'SomeValue')) // can be called multiple times. Uncomment this to add meta datas
-    // ->setMetaData(array('metaname' => 'SomeOtherDataName', 'metavalue' => 'SomeOtherValue')) // can be called multiple times. Uncomment this to add meta datas
-    ->initialize();
-}else{
-    if($getData['cancelled'] && $getData['txref']){
-        // Handle canceled payments
-        $payment
-        ->eventHandler(new myEventHandler)
-        ->requeryTransaction($getData['txref'])
-        ->paymentCanceled($getData['txref']);
-    }elseif($getData['txref']){
-        // Handle completed payments
-        $payment->logger->notice('Payment completed. Now requerying payment.');
-        
-        $payment
-        ->eventHandler(new myEventHandler)
-        ->requeryTransaction($getData['txref']);
-    }else{
-        $payment->logger->warn('Stop!!! Please pass the txref parameter!');
-        echo 'Stop!!! Please pass the txref parameter!';
+```
+##Fetch a recipient
+Just like fetching a list of all your recipients, you can as well make a request to fetch a single recipient on your account. This will require you to use the `id` of that recipient that was returned as `data.id` in your response object when the recipient was created. Here's a sample request to fetch a recipient:
+##Change snippets to PHP
+```javascript
+var request = require("request");
+
+var options = { method: 'GET',
+  url: 'https://api.ravepay.co/v2/gpx/transfers/beneficiaries',
+  qs: { 
+  	seckey: 'YOUR_SECRET_KEY',
+  	id: '400570' // recipient id, gotten from the create a recipient response
+  },
+  headers:
+   { 'content-type': 'application/json' } };
+
+request(options, function (error, response, body) {
+  if (error) throw new Error(error);
+
+  console.log(body);
+});
+```
+
+###Sample response
+This is a sample response from returned by Flutterwave to provide you more information about the recipient when your request is processed successfully:
+
+```json
+{
+  "status": "success",
+  "message": "QUERIED-BENEFICIARIES",
+  "data": {
+    "page_info": {
+      "total": 1,
+      "current_page": 1,
+      "total_pages": 1
+    },
+    "payout_beneficiaries": [
+      {
+        "id": 400570,
+        "account_number": "00*****310",
+        "bank_code": "063",
+        "fullname": "EKENE EZE",
+        "meta": null,
+        "date_created": "2020-01-23T12:32:23.000Z",
+        "bank_name": "ACCESS BANK PLC (DIAMOND)"
+      }
+    ]
+  }
+}
+```
+
+##Delete a recipient
+You can delete an existing recipient from your Flutterwave account programmatically using this feature. When you're done transacting with a particular recipient and would like to delete their details from your account, you can do so by making a request to delete that recipient using the recipients `id`. Here's a sample request:
+##Change snippets to PHP
+```javascript
+var request = require('request')
+request.post('https://api.ravepay.co/v2/gpx/transfers/beneficiaries/delete', {
+    json: {
+        "id": "400570", // recipient id, gotten from the create a recipient response
+        "seckey": "YOUR_SECRET_KEY"
+		}
+}, (error, res, body) => {
+    if (error) {
+        console.error(error)
+        return
     }
+    console.log(body)
+})
+``` 
+
+###Sample response
+Here's a sample response for succesfully deleting a recipient:
+
+```json
+{
+    "status": "success",
+    "message": "BENEFICIARY-DELETED",
+    "data": "Deleted"
 }
 ```

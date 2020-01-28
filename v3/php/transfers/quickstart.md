@@ -1,129 +1,172 @@
+## Quickstart
+Flutterwave transfer feature makes it possible for you to send money to other bank accounts directly from your Flutterwave dashboard or via our [APIs](https://flutterwavedevelopers.readme.io/v2.0/reference#how-transfers-work). We would describe the process to complete a transfer both through your Flutterwave dashboard and our API.
 
-## php quickstart 
+##Make a transfer from your Flutterwave dashboard
+To make a transfer from your dashboard, you need to ensure that your available balance on Flutterwave is funded. You can see how to do that [here](https://support.flutterwave.com/en/articles/3632728-top-up-your-available-balance). 
 
-# Support Direct Charges
+Then navigate to the `Transfers` section on your dashboard and click **+ New Transfer** 
 
-Save your PUBLIC_KEY, SECRET_KEY, ENV in the .env file
-```env
+![New Transfer](https://res.cloudinary.com/kennyy/image/upload/v1579774158/new-transfer_jiti6i.png)
 
-PUBLIC_KEY = "****YOUR**PUBLIC**KEY****"
-SECRET_KEY = "****YOUR**SECRET**KEY****"
-ENV = "staging or live"
+Choose the transfer recipient type:
 
+![Transfer recipient type](https://res.cloudinary.com/kennyy/image/upload/v1579774532/transfer-type_lcf92h.png)
+
+
+Select the type of transfer you want to make, bulk or single:
+
+![Transfer type](https://res.cloudinary.com/kennyy/image/upload/v1579774773/transfer-type_jrdlnc.png)
+
+Enter the recipient account details or select an existing account and click on **Confirm Transfer** to complete your transfer.
+
+![Complete Transfer](https://res.cloudinary.com/kennyy/image/upload/v1579775241/complete_transfer_ywipyp.png)
+
+When you've completed the transfer, it will be processed in some seconds with a successful status:
+
+![Transfer successful](https://res.cloudinary.com/kennyy/image/upload/v1579777252/transfer_successful_khj1hd.png)
+
+
+### Making transfers in different currencies
+Flutterwave allows you to initiate transfers to multiple currencies from any of the currencies available on your account. The exchange rate in the currency you would be transferring to would be displayed on the transfers page.
+
+![Transfer in other currencies](https://res.cloudinary.com/kennyy/image/upload/v1579777525/transfer_in_other_currencies_qia4h5.png)
+![Transfer exchange rates](https://res.cloudinary.com/kennyy/image/upload/v1579777721/exchange_rate_z1entq.png)
+
+
+##Make a transfer using the Flutterwave API
+
+Making transfers with our API's can be done in a few clear steps. However, it is important you first understand how our transfer API works.
+
+When a transfer is initiated, it comes with a status `NEW` which means the transfer has been queued for processing. To get the updated status of the transfer, you would need to get the `id` of the transfer. 
+
+The transfer `id` is the one you got as `data.id` from the response object when you initiated the transfer. You can then use this `id` in your request object to make a fresh request to our [Fetch a Transfer](https://developer.flutterwave.com/reference#fetch-transfers) endpoint to retrieve the updated status of the transfer.
+
+
+###Create transfer recipient 
+The first step to making a transfer is to create the transfer recipient. Basically, you would call our [create recipient endpoint](https://developer.flutterwave.com/reference#create-a-transfer-recipient) with the details of the recipient (Bank account no, Bank ISO) and your secret key. 
+
+This recipient will be create on your account and assigned a unique reference. This is not a mandatory step as you can as well provide the recipient bank details while initiating a transfer. However, if you have an existing recipient, you can easily pass the recipients `id` when initiating a transfer rather than defining all their bank details in your request object. Here's a sample implementation for creating a new transfer recipient:
+
+##Change snippet to PHP
+
+```javascript
+var request = require('request')
+request.post('https://api.ravepay.co/v2/gpx/transfers/beneficiaries/create
+', {
+    json: {
+        "account_bank": "063",
+        "account_number": "0058000310",
+        "seckey": "YOUR_SECRET_KEY"
+	}
+}, (error, res, body) => {
+    if (error) {
+        console.error(error)
+        return
+    }
+    console.log(body)
+})
+``` 
+#### Request parameters
+The table below defines the parameters and descriptions of the request object we constructed above to create a new recipient. 
+
+| Parameter 	| Required 	| Description 	|
+|-----------------	|----------	|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
+| `account_bank` 	| True 	| This is the recipient's bank ISO code, use this [List of Banks endpoint](https://developer.flutterwave.com/reference#list-of-banks) to retrieve a list of all supported banks with their respective ISO codes. Ex: "063", "044" etc. 	|
+| `account_number` 	| True 	| This is the bank account number of the recipient. 	|
+| `seckey` 	| True 	| This is your merchant secret key, see how to get your API keys from your dashboard [here](https://developer.flutterwave.com/reference#api-keys-1) | 
+`business_name` 	| False 	| This is the sub-account business name. 
+
+#### Sample response
+When these values are provided and the request is successful, Flutterwave will return a response in this format to provide you more information about the new recipient:
+
+```json
+{
+    "status": "success",
+    "message": "BENEFICIARY-CREATED",
+    "data": {
+        "id": 400570,
+        "account_number": "00*****310",
+        "bank_code": "063",
+        "fullname": "EKENE EZE",
+        "date_created": "2020-01-23T12:32:23.000Z",
+        "bank_name": "ACCESS BANK PLC (DIAMOND)"
+    }
+}
 ```
 
-## Account Charge Sample implementation
 
-The following implementation shows how to initiate a direct bank charge
-```php
-require("Flutterwave-Rave-PHP-SDK/lib/AccountPayment.php");
-use Flutterwave\Account;
+###Initiate a transfer
+To initiate a transfer, you will need to supply transfer details and send it in a POST request to our [transfer](https://api.ravepay.co/v2/gpx/transfers/create) endpoint. Here's a sample implementation to initiate a transfer:
 
-    $array = array(
-        "PBFPubKey" =>"****YOUR**PUBLIC**KEY****",
-        "accountbank"=> "044",// get the bank code from the bank list endpoint.
-        "accountnumber" => "0690000031",
-        "currency" => "NGN",
-        "payment_type" => "account",
-        "country" => "NG",
-        "amount" => "10",
-        "email" => "eze@gmail.com",
-       // passcode => "09101989",//customer Date of birth this is required for Zenith bank account payment.
-        "bvn" => "12345678901",
-        "phonenumber" => "0902620185",
-        "firstname" => "temi",
-        "lastname" => "desola",
-        "IP" => "355426087298442",
-        "txRef" => "MC-".time(), // merchant unique reference
-        "device_fingerprint" => "69e6b7f0b72037aa8428b70fbe03986c"
+##Change snippet to PHP
 
-    );
-$account = new Account();
-$result = $account->accountCharge($array);
-print_r($result);
-```
-## Card Charge Sample implementation
+```javascript
+var request = require('request')
+request.post('https://api.ravepay.co/v2/gpx/transfers/create', {
+    json: {
+        "account_bank": "063",
+        "account_number": "0058000310",
+        "seckey": "YOUR_SECRET_KEY",
+        "currency": "NGN",
+        "narration": "New transfer",
+        "beneficiary_name": "EKENE EZE",
+        "amount": "200"
+}
+}, (error, res, body) => {
+    if (error) {
+        console.error(error)
+        return
+    }
+    console.log(body)
+})
+``` 
+If you're making a transfer to an existing beneficiary, you will not need to specify the `account_bank` and `account_number` parameters. Instead, you will pass the `recipient` parameter and supply the `id` of the recipient as the value:
+##Change snippet to PHP
 
-The following implementation shows how to initiate a direct card charge
-```php
-require("Flutterwave-Rave-PHP-SDK/lib/CardPayment.php");
-use Flutterwave\Card;
-    $array = array(
-        "PBFPubKey" => "****YOUR**PUBLIC**KEY****",
-        "cardno" =>"5438898014560229",
-        "cvv" => "890",
-        "expirymonth"=> "09",
-        "expiryyear"=> "19",
-        "currency"=> "NGN",
-        "country"=> "NG",
-        "amount"=> "2000",
-        "pin"=>"3310",
-        //"payment_plan"=> "980", //use this parameter only when the payment is a subscription, specify the payment plan id
-        "email"=> "eze@gmail.com",
-        "phonenumber"=> "0902620185",
-        "firstname"=> "temi",
-        "lastname"=> "desola",
-        "IP"=> "355426087298442",
-        "txRef"=>"MC-".time(),// your unique merchant reference
-        "meta"=>["metaname"=> "flightID", "metavalue"=>"123949494DC"],
-        "redirect_url"=>"https://rave-webhook.herokuapp.com/receivepayment",
-        "device_fingerprint"=> "69e6b7f0b72037aa8428b70fbe03986c"
-    );
-$card = new Card();
-$result = $card->cardCharge($array);
-print_r($result);
-```
+```javascript
+var request = require('request')
+request.post('https://api.ravepay.co/v2/gpx/transfers/create', {
+    json: {
+        "recipient": "400570", // recipient id, gotten from the create a recipient response
+        "seckey": "YOUR_SECRET_KEY",
+        "currency": "NGN",
+        "narration": "New transfer",
+        "beneficiary_name": "EKENE EZE",
+        "amount": "200"
+	}
+}, (error, res, body) => {
+    if (error) {
+        console.error(error)
+        return
+    }
+    console.log(body)
+})
+``` 
 
-## Mobile Money Payments
+###Sample response
+When these values are provided and the request is successful, Flutterwave will return a response in this format to provide more information about the new transfer:
 
-The following implementation shows how to initiate a mobile money payment
-```php
-require("Flutterwave-Rave-PHP-SDK/lib/MobileMoney.php");
-use Flutterwave\MobileMoney;
-
-$array = array(
-    "PBFPubKey" =>"****YOUR**PUBLIC**KEY****",
-    "currency"=> "GHS",
-    "payment_type" => "mobilemoneygh",
-    "country" => "GH",
-    "amount" => "10",
-    "email" => "eze@gmail.com",
-    "phonenumber"=> "054709929220",
-    "network"=> "MTN",
-    "firstname"=> "eze",
-    "lastname"=> "emmanuel",
-    "voucher"=> "128373", // only needed for Vodafone users.
-    "IP"=> "355426087298442",
-    "txRef"=> "MC-123456789",
-    "orderRef"=> "MC_123456789",
-    "is_mobile_money_gh"=> 1,
-    "redirect_url"=> "https://rave-webhook.herokuapp.com/receivepayment",
-    "device_fingerprint"=> "69e6b7f0b72037aa8428b70fbe03986c"
-
-);
-    $mobilemoney = new MobileMoney();
-    $result = $mobilemoney->mobilemoney($array);
-    $print_r($result);
-```
-## Create Vitual Cards
-
-The following implementation shows how to create virtual cards on rave
-```php
-require("Flutterwave-Rave-PHP-SDK/lib/VirtualCards.php");
-use Flutterwave\VirtualCard;
-
-$array = array(
-    "secret_key"=>"****YOUR**SECRET**KEY****",
-	"currency"=> "NGN",
-	"amount"=>"200",
-	"billing_name"=> "Mohammed Lawal",
-	"billing_address"=>"DREAM BOULEVARD",
-	"billing_city"=> "ADYEN",
-	"billing_state"=>"NEW LANGE",
-	"billing_postal_code"=> "293094",
-	"billing_country"=> "US"
-);
-    $virtualCard = new VirtualCard();
-    $result = $virtualCard->create($array);
-    print_r($result);
+```json
+{
+    "status": "success",
+    "message": "TRANSFER-CREATED",
+    "data": {
+        "id": 1094570,
+        "account_number": "00*****310",
+        "bank_code": "063",
+        "fullname": "EKENE EZE",
+        "date_created": "2020-01-23T14:27:48.000Z",
+        "currency": "NGN",
+        "amount": "100",
+        "fee": 45,
+        "status": "NEW",
+        "reference": "527d8b1f9abdb6a4",
+        "meta": null,
+        "narration": "New transfer",
+        "complete_message": "",
+        "requires_approval": 0,
+        "is_approved": 1,
+        "bank_name": "ACCESS BANK PLC (DIAMOND)"
+    }
+}
 ```
