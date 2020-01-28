@@ -1,129 +1,96 @@
+# Split to multiple customers
 
-## php quickstart 
+You can split payments to multiple customers by passing the subaccount IDs of the customers as an array of objects in Rave's inline function. You can also specify the ratio in which that payment will be split. For example, if you are splitting the money between three vendors and you don't want them to all get equal amounts you can apply a split ratio of   `2:3:5` .  This will imply that you are splitting the money as 20%, 30%, 50% accordingly and the vendors would be paid as follows:
 
-# Support Direct Charges
+- The first vendor would get `(2/(2+3+5) x (total amount - rave fees + merchant commission))`.
+- The second vendor would get `(3/(2+3+5) x (total amount - rave fees + merchant commission))`.
+- The third vendor would get `(5/(2+3+5) x (total amount - rave fees + merchant commission))`.
 
-Save your PUBLIC_KEY, SECRET_KEY, ENV in the .env file
-```env
 
-PUBLIC_KEY = "****YOUR**PUBLIC**KEY****"
-SECRET_KEY = "****YOUR**SECRET**KEY****"
-ENV = "staging or live"
+The subaccounts are created under your account and funds collected for them would be settled into the provided settlement account based on the [settlement cycle](https://support.flutterwave.com/article/153-settlement-schedule). Here's a code sample showing how to split payments between multiple accounts:
 
+##Change snippet to PHP
+```javascript
+<form>
+    <script src="https://api.ravepay.co/flwv3-pug/getpaidx/api/flwpbf-inline.js"></script>
+    <button type="button" onClick="payWithRave()">Pay Now</button>
+</form>
+
+<script>
+    const API_publicKey = "<ADD YOUR PUBLIC KEY HERE>";
+
+    function payWithRave() {
+        var x = getpaidSetup({
+            PBFPubKey: API_publicKey,
+            customer_email: "user@example.com",
+            amount: 2000,
+            currency: "NGN",
+            txref: "rave-123456",
+            subaccounts: [
+              {
+                id: "RS_D87A9EE339AE28BFA2AE86041C6DE70E",
+                            transaction_split_ratio:"2"
+              },
+              
+              {
+                id: "RS_344DD49DB5D471EF565C897ECD67CD95",
+                transaction_split_ratio:"3"
+              },
+              
+              {
+                id: "RS_839AC07C3450A65004A0E11B83E22CA9",
+                transaction_split_ratio:"5"
+              }
+            ],
+            meta: [{
+                metaname: "flightID",
+                metavalue: "AP1234"
+            }],
+            onclose: function() {},
+            callback: function(response) {
+                var txref = response.tx.txRef; // collect flwRef returned and pass to                                                a server page to complete status check.
+                console.log("This is the response returned after a charge", response);
+                if (
+                    response.tx.chargeResponseCode == "00" ||
+                    response.tx.chargeResponseCode == "0"
+                ) {
+                    // redirect to a success page
+                } else {
+                    // redirect to a failure page.
+                }
+
+                x.close(); // use this to close the modal immediately after payment.
+            }
+        });
+    }
+</script>
 ```
 
-## Account Charge Sample implementation
+Below are the parameters involved when splitting payments to multiple subaccounts:
 
-The following implementation shows how to initiate a direct bank charge
-```php
-require("Flutterwave-Rave-PHP-SDK/lib/AccountPayment.php");
-use Flutterwave\Account;
+## Parameters
 
-    $array = array(
-        "PBFPubKey" =>"****YOUR**PUBLIC**KEY****",
-        "accountbank"=> "044",// get the bank code from the bank list endpoint.
-        "accountnumber" => "0690000031",
-        "currency" => "NGN",
-        "payment_type" => "account",
-        "country" => "NG",
-        "amount" => "10",
-        "email" => "eze@gmail.com",
-       // passcode => "09101989",//customer Date of birth this is required for Zenith bank account payment.
-        "bvn" => "12345678901",
-        "phonenumber" => "0902620185",
-        "firstname" => "temi",
-        "lastname" => "desola",
-        "IP" => "355426087298442",
-        "txRef" => "MC-".time(), // merchant unique reference
-        "device_fingerprint" => "69e6b7f0b72037aa8428b70fbe03986c"
+| Parameter                         | Required               | Description                               |
+| :------------------------------   | :--------------------  | :---------------------------------------- |
+| ```id```                          | True                   | This is the ID of the subaccount, you can |
+|                                   |   (String)       |    get it from your dashboard e.g.        |   
+|                                   |                        |    `RS_D87A9EE339AE28BFA2AE86041C6DE70E`  |   
+| meta                              | True                   | This is the data that describes and gives |
+|                                   |   (String)       |    information about the subaccount       |   
+| ```transaction_split_ratio```     | False                  | This is the ratio value representing the  | 
+|                                   |  (String)            |  share of the amount you intend to give a |     |                                   |                        | subaccount. This is only needed when:     |
+|                                   |                        |                                           |
+|                                   |                        |   1. You are splitting between more than  |
+|                                   |                        |      one subaccount.                      |
+|                                   |                        |   2. You are not passing the exact amount |
+|                                   |                        |      you expect the subaccount to get.    |  
+|                                   |                        |                                           | 
 
-    );
-$account = new Account();
-$result = $account->accountCharge($array);
-print_r($result);
-```
-## Card Charge Sample implementation
+ 
+ ### Using percentages as transaction charges
 
-The following implementation shows how to initiate a direct card charge
-```php
-require("Flutterwave-Rave-PHP-SDK/lib/CardPayment.php");
-use Flutterwave\Card;
-    $array = array(
-        "PBFPubKey" => "****YOUR**PUBLIC**KEY****",
-        "cardno" =>"5438898014560229",
-        "cvv" => "890",
-        "expirymonth"=> "09",
-        "expiryyear"=> "19",
-        "currency"=> "NGN",
-        "country"=> "NG",
-        "amount"=> "2000",
-        "pin"=>"3310",
-        //"payment_plan"=> "980", //use this parameter only when the payment is a subscription, specify the payment plan id
-        "email"=> "eze@gmail.com",
-        "phonenumber"=> "0902620185",
-        "firstname"=> "temi",
-        "lastname"=> "desola",
-        "IP"=> "355426087298442",
-        "txRef"=>"MC-".time(),// your unique merchant reference
-        "meta"=>["metaname"=> "flightID", "metavalue"=>"123949494DC"],
-        "redirect_url"=>"https://rave-webhook.herokuapp.com/receivepayment",
-        "device_fingerprint"=> "69e6b7f0b72037aa8428b70fbe03986c"
-    );
-$card = new Card();
-$result = $card->cardCharge($array);
-print_r($result);
-```
+<div class="magic-block-callout type-warning">
+   
+    When setting up your `transaction_charge_type` value as a percentage, you would need to add the percentage value i.e. `transaction_charge` in decimal. e.g. `transaction_charge: 0.09` is equal to a `9%` commission on transactions.
 
-## Mobile Money Payments
-
-The following implementation shows how to initiate a mobile money payment
-```php
-require("Flutterwave-Rave-PHP-SDK/lib/MobileMoney.php");
-use Flutterwave\MobileMoney;
-
-$array = array(
-    "PBFPubKey" =>"****YOUR**PUBLIC**KEY****",
-    "currency"=> "GHS",
-    "payment_type" => "mobilemoneygh",
-    "country" => "GH",
-    "amount" => "10",
-    "email" => "eze@gmail.com",
-    "phonenumber"=> "054709929220",
-    "network"=> "MTN",
-    "firstname"=> "eze",
-    "lastname"=> "emmanuel",
-    "voucher"=> "128373", // only needed for Vodafone users.
-    "IP"=> "355426087298442",
-    "txRef"=> "MC-123456789",
-    "orderRef"=> "MC_123456789",
-    "is_mobile_money_gh"=> 1,
-    "redirect_url"=> "https://rave-webhook.herokuapp.com/receivepayment",
-    "device_fingerprint"=> "69e6b7f0b72037aa8428b70fbe03986c"
-
-);
-    $mobilemoney = new MobileMoney();
-    $result = $mobilemoney->mobilemoney($array);
-    $print_r($result);
-```
-## Create Vitual Cards
-
-The following implementation shows how to create virtual cards on rave
-```php
-require("Flutterwave-Rave-PHP-SDK/lib/VirtualCards.php");
-use Flutterwave\VirtualCard;
-
-$array = array(
-    "secret_key"=>"****YOUR**SECRET**KEY****",
-	"currency"=> "NGN",
-	"amount"=>"200",
-	"billing_name"=> "Mohammed Lawal",
-	"billing_address"=>"DREAM BOULEVARD",
-	"billing_city"=> "ADYEN",
-	"billing_state"=>"NEW LANGE",
-	"billing_postal_code"=> "293094",
-	"billing_country"=> "US"
-);
-    $virtualCard = new VirtualCard();
-    $result = $virtualCard->create($array);
-    print_r($result);
-```
+</div>

@@ -1,96 +1,71 @@
+# Split to one customer
 
-## php single transfer
+You can split payments to one customer by passing the customer's sub-account ID as an object in Rave's inline function:
 
-## BVN Verification Sample implementation
+##Change snippet to PHP
 
-The following implementation shows how to verify a Bank Verification Number
-```php
-require("Flutterwave-Rave-PHP-SDK/lib/Bvn.php");
-use Flutterwave\Bvn;
-$bvn = new Bvn();
-$result = $bvn->verifyBVN("123456789");
-print_r($result);
+```javascript  
+<form>
+    <script src="https://api.ravepay.co/flwv3-pug/getpaidx/api/flwpbf-inline.js"></script>
+    <button type="button" onClick="payWithRave()">Pay Now</button>
+</form>
+
+<script>
+    const API_publicKey = "<ADD YOUR PUBLIC KEY HERE>";
+
+    function payWithRave() {
+        var x = getpaidSetup({
+            PBFPubKey: API_publicKey,
+            customer_email: "user@example.com",
+            amount: 2000,
+            currency: "NGN",
+            txref: "rave-123456",
+            subaccounts: [
+              {
+                id: "RS_D87A9EE339AE28BFA2AE86041C6DE70E" // This assumes you have setup your commission on the dashboard.
+              }
+            ],
+            meta: [{
+                metaname: "flightID",
+                metavalue: "AP1234"
+            }],
+            onclose: function() {},
+            callback: function(response) {
+                var txref = response.tx.txRef; // collect flwRef returned and pass to                                                a server page to complete status check.
+                console.log("This is the response returned after a charge", response);
+                if (
+                    response.tx.chargeResponseCode == "00" ||
+                    response.tx.chargeResponseCode == "0"
+                ) {
+                    // redirect to a success page
+                } else {
+                    // redirect to a failure page.
+                }
+
+                x.close(); // use this to close the modal immediately after payment.
+            }
+        });
+    }
+</script>
 ```
 
-## Create a Payment Plan Sample implementation
+Below are the parameters involved when splitting payments to a subaccount:
 
-The following implementation shows how to create a payment plan on the rave dashboard
-```php
-require("Flutterwave-Rave-PHP-SDK/lib/PaymentPlan.php");
-use Flutterwave\PaymentPlan;
 
-$array = array(
-    "amount" => "2000",
-     "name"=> "The Premium Plan",
-     "interval"=> "monthly",
-     "duration"=> "12",
-     "seckey" => "****YOUR**SECRET**KEY****"
-);
+## Parameters
 
-$plan = new PaymentPlan();
-$result = $plan->createPlan($array);
-print_r($result);
+| Parameter               | Required               | Description                               |
+| :--------------------   | :--------------------  | :---------------------------------------- |
+| `id`                | True                   | This is the ID of the subaccount, you can |
+|                         |   (string)       |    get it from your dashboard e.g.        |   
+|                         |                        |    `RS_D87A9EE339AE28BFA2AE86041C6DE70E`  |   
+| `meta`                    | True                   | This is the data that describes and gives |
+|                         | (string)         | information about the subaccount          |
 
-```
-## Create Transfer Recipient Sample implementation
+### Using percentages as transaction charges
 
-The following implementation shows how to create a transfer recipient on the rave dashboard
-```php
-require("Flutterwave-Rave-PHP-SDK/lib/Recipient.php");
-use Flutterwave\Recipient;
+<div class="magic-block-callout type-warning">
 
-$array = array(
-    "account_number"=>"0690000030",
-	"account_bank"=>"044",
-	"seckey"=>"****YOUR**SECRET**KEY****"
-);
+    When setting up your `transaction_charge_type` value as a percentage, you would need to add the percentage value i.e. `transaction_charge` in decimal. e.g. `transaction_charge: 0.09` is equal to a `9%` commission on transactions.
 
-$recipient = new Recipient();
-$result = $recipient->recipient($array);
-print_r($result);
-```
-
-## Create Refund Sample implementation
-
-The following implementation shows how to initiate a refund
-```php
-require("Flutterwave-Rave-PHP-SDK/lib/Refund.php");
-use Flutterwave\Refund;
-
-$array = array(
-    "ref"=>"txRef",//pass a transaction reference to initiate refund
-	"seckey"=>"****YOUR**SECRET**KEY****"
-);
-
-$refund = new Refund();
-$result = $refund->refund($array);
-print_r($result);
-```
-
-## Subscriptions Sample implementation
-
-The following implementation shows how to activata a subscription, fetch a subscription, get all subscription
-```php
-require("Flutterwave-Rave-PHP-SDK/lib/Subscription.php");
-use Flutterwave\Subscription;
-
-$email = "eze@gmail.com";//email address of subscriber
-$id = 1112 //Id of subscription plan
-
-$subscription = new Subscription();
-
-$resultFetch = $subscription->fetchASubscription($email);//fetches a subscription
-$resultGet = $subscription->getAllSubscription();//gets all existing subscription
-$resultActivate = $subscription->activateSubscription($id);// activates a subscription plan
-
-//returns the result 
-print_r($result);
-```
-You can also find the class documentation in the docs folder. There you will find documentation for the `Rave` class and the `EventHandlerInterface`.
-
-Enjoy... :v:
-
-## ToDo
-
-- Write Unit Test
-- Support Tokenized payment
+</div>
