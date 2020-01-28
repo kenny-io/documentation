@@ -12,25 +12,29 @@
         "url": "/php/transfers/quickstart.md"
       },
       {
-        "title": "Completing a transfer (php)",
+        "title": "Fetch Transfers (php)",
         "identifier": "php",
-        "subfolderitems": [
-          {
-            "title": "Single Transfers (php)",
-            "identifier": "php",
-            "url": "/php/transfers/singletransfer.md"
-          },
-          {
-            "title": "Bulk transfers (php)",
-            "identifier": "php",
-            "url": "/php/transfers/bulktransfer.md"
-          }
-        ]
+        "url": "/php/transfers/fetch_transfers.md"
       },
       {
-        "title": "Going Live (php).",
+        "title": "Bulk Transfers (php)",
         "identifier": "php",
-        "url": "/php/transfers/goinglive.md"
+        "url": "/php/transfers/bulktransfer.md"
+      },
+      {
+        "title": "Confirm Transfer Status (php)",
+        "identifier": "php",
+        "url": "/php/transfers/confirm_transfer_status.md"
+      },
+      {
+        "title": "Transfer Recipients (php)",
+        "identifier": "php",
+        "url": "/php/transfers/transfer_recipients.md"
+      },
+      {
+        "title": "Transfer Features (php).",
+        "identifier": "php",
+        "url": "/php/transfers/transfer_features.md"
       }
     ],
     "node": [
@@ -45,25 +49,29 @@
         "url": "/node/transfers/quickstart.md"
       },
       {
-        "title": "Completing a transfer (node)",
+        "title": "Fetch Transfers (node)",
         "identifier": "node",
-        "subfolderitems": [
-          {
-            "title": "Single Transfers (node)",
-            "identifier": "node",
-            "url": "/node/transfers/singletransfer.md"
-          },
-          {
-            "title": "Bulk transfers (node)",
-            "identifier": "node",
-            "url": "/node/transfers/bulktransfer.md"
-          }
-        ]
+        "url": "/node/transfers/fetch_transfers.md"
       },
       {
-        "title": "Going Live (node).",
+        "title": "Bulk Transfers (node)",
         "identifier": "node",
-        "url": "/node/transfers/goinglive.md"
+        "url": "/node/transfers/bulktransfer.md"
+      },
+      {
+        "title": "Confirm Transfer Status (node)",
+        "identifier": "node",
+        "url": "/node/transfers/confirm_transfer_status.md"
+      },
+      {
+        "title": "Transfer Recipients (node)",
+        "identifier": "node",
+        "url": "/node/transfers/transfer_recipients.md"
+      },
+      {
+        "title": "Transfer Features (node).",
+        "identifier": "node",
+        "url": "/node/transfers/transfer_features.md"
       }
     ],
     "python": [
@@ -113,12 +121,12 @@
         "url": "/node/transfers/quickstart.md"
       },
       {
-        "title": "Create a payment plan (php)",
+        "title": "Create a Payment Plan (php)",
         "identifier": "php",
         "url": "/node/transfers/quickstart.md"
       },
       {
-        "title": "Charge a subscription (php)",
+        "title": "Charge a Subscription (php)",
         "identifier": "php",
         "url": "/node/transfers/singletransfer.md"
       },
@@ -188,44 +196,64 @@
       {
         "title": "Overview (php)",
         "identifier": "php",
-        "url": "/node/transfers/overview.md"
+        "url": "/php/split_payments/overview.md"
       },
       {
         "title": "Quick Start (php)",
         "identifier": "php",
-        "url": "/node/transfers/quickstart.md"
+        "url": "/php/split_payments/quickstart.md"
       },
       {
-        "title": "Create subaccount (php)",
+        "title": "Split to One Customer  (php)",
         "identifier": "php",
-        "url": "/node/transfers/quickstart.md"
+        "url": "/php/split_payments/split_to_one_customer.md"
       },
       {
-        "title": "Charge with subaccount (php)",
+        "title": "Split to Multiple Customers (php)",
         "identifier": "php",
-        "url": "/node/transfers/singletransfer.md"
+        "url": "/php/transfers/singletransfer.md"
+      },
+      {
+        "title": "Processing Transaction Charges (php)",
+        "identifier": "php",
+        "url": "/php/split_payments/processing_transaction_charges.md"
+      },
+      {
+        "title": "Setting Exact Split Amount (php)",
+        "identifier": "php",
+        "url": "/php/split_payments/setting_exact_split_amount.md"
       }
     ],
     "node": [
       {
         "title": "Overview (node)",
-        "identifier": "phnodep",
-        "url": "/node/transfers/overview.md"
+        "identifier": "node",
+        "url": "/node/split_payments/overview.md"
       },
       {
         "title": "Quick Start (node)",
         "identifier": "node",
-        "url": "/node/transfers/quickstart.md"
+        "url": "/node/split_payments/quickstart.md"
       },
       {
-        "title": "Create subaccount (node)",
+        "title": "Split to One Customer (node)",
         "identifier": "node",
-        "url": "/node/transfers/quickstart.md"
+        "url": "/node/split_payments/split_to_one_customer.md"
       },
       {
-        "title": "Charge with subaccount (node)",
+        "title": "Split to Multiple Customers (node)",
         "identifier": "node",
         "url": "/node/transfers/singletransfer.md"
+      },
+      {
+        "title": "Processing Transaction Charges (node)",
+        "identifier": "node",
+        "url": "/node/split_payments/processing_transaction_charges.md"
+      },
+      {
+        "title": "Setting Exact Split Amount (node)",
+        "identifier": "node",
+        "url": "/node/split_payments/setting_exact_split_amount.md"
       }
     ],
     "python": [
@@ -256,22 +284,27 @@
       {
         "title": "Overview (php)",
         "identifier": "php",
-        "url": "/node/transfers/overview.md"
+        "url": "/php/bill_payments/overview.md"
       },
       {
         "title": "Quick Start (php)",
         "identifier": "php",
-        "url": "/node/transfers/quickstart.md"
+        "url": "/php/bill_payments/quickstart.md"
       },
       {
-        "title": "BVN Validation (php)",
+        "title": "Purchase a Bill Service (php)",
         "identifier": "php",
-        "url": "/node/transfers/quickstart.md"
+        "url": "/php/bill_payments/purchase_a_bill_service.md"
       },
       {
-        "title": "Go Live (php)",
+        "title": "Retreive Recurring Bill Service (php)",
         "identifier": "php",
-        "url": "/node/transfers/singletransfer.md"
+        "url": "/php/bill_payments/retreive_recurring_bill_service.md"
+      },
+      {
+        "title": "Validate a Bill Service (php)",
+        "identifier": "php",
+        "url": "/php/bill_payments/validate_a_bill_service.md"
       }
     ],
     "node": [
