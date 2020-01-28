@@ -2,7 +2,7 @@
 
 You can split payments to one customer by passing the customer's subaccount ID as an object in Rave's inline function:
 
-```javascript  
+```javascript
 <form>
     <script src="https://api.ravepay.co/flwv3-pug/getpaidx/api/flwpbf-inline.js"></script>
     <button type="button" onClick="payWithRave()">Pay Now</button>
@@ -49,22 +49,21 @@ You can split payments to one customer by passing the customer's subaccount ID a
 
 Below are the parameters involved when splitting payments to a subaccount:
 
-
 ## Parameters
 
-| Parameter               | Required               | Description                               |
-| :--------------------   | :--------------------  | :---------------------------------------- |
-| ```id```                | True                   | This is the ID of the subaccount, you can |
-|                         |   (```string```)       |    get it from your dashboard e.g.        |   
-|                         |                        |    `RS_D87A9EE339AE28BFA2AE86041C6DE70E`  |   
-| meta                    | True                   | This is the data that describes and gives |
-|                         | (```string```)         | information about the subaccount          |
-|                         |                        |                                           |
-
+| Parameter | Required | Description                               |
+| :-------- | :------- | :---------------------------------------- |
+| `id`      | True     | This is the ID of the subaccount, you can |
+|           | (String) | get it from your dashboard e.g.           |
+|           |          | `RS_D87A9EE339AE28BFA2AE86041C6DE70E`     |
+| `meta`    | True     | This is the data that describes and gives |
+|           | (String) | information about the subaccount          |
+|           |          |                                           |
 
 ### Using percentages as transaction charges
 
 <div class="magic-block-callout type-warning">
 
     When setting up your `transaction_charge_type` value as a percentage, you would need to add the percentage value i.e. `transaction_charge` in decimal. e.g. `transaction_charge: 0.09` is equal to a `9%` commission on transactions.
+
 </div>

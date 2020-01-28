@@ -5,19 +5,20 @@ The default implementation for sub-accounts, expects that you pass the value of 
 Should you want to specify a fixed amount to be passed to a sub-account, we created a payment flow that allows you to pass the exact amount you want a sub-account to receive.
 
 ## Pass exact split amount to a sub-account
+
 In cases where you want to pass an exact split amount to a sub-account, you need to specify that amount as the value of your `transaction_charge` in the `subaccounts[]` array. Here's a sample implementation:
 
 ```javascript
 // Sending fixed amount to a single sub-account
-    
+
 <form>
     <script src="https://api.ravepay.co/flwv3-pug/getpaidx/api/flwpbf-inline.js"></script>
     <button type="button" onClick="payWithRave()">Pay Now</button>
 </form>
-    
+
 <script>
     const API_publicKey = "YOUR_PUBLIC_KEY";
-    
+
     function payWithRave() {
         var x = getpaidSetup({
             PBFPubKey: API_publicKey,
@@ -48,16 +49,18 @@ In cases where you want to pass an exact split amount to a sub-account, you need
                 } else {
                     // redirect to a failure page.
                 }
-    
+
                 x.close(); // use this to close the modal immediately after payment.
             }
         });
     }
 </script>
 ```
+
 > Notice that the `transaction_charge_type` has a value of `flat_subaccount` which specifies that the value of `transaction_charge` is the exact value we want the sub-account to receive. In this case, we expect that before you pass that amount to us, you would have calculated both the transaction processing fee and commission and deducted it from the amount you pass.
 
 ## Pass exact split amount to multiple sub-accounts
+
 When splitting payment to multiple sub-accounts, Flutterwave makes it possible to specify exactly how much each sub-account should receive for every transaction. Here's a sample implementation:
 
 ```javascript
@@ -84,13 +87,13 @@ When splitting payment to multiple sub-accounts, Flutterwave makes it possible t
                 transaction_charge_type: "flat_subaccount",
                 transaction_charge: "1000"
               },
-              
+
               {
                 id: "RS_344DD49DB5D471EF565C897ECD67CD95",
                 transaction_charge_type: "flat_subaccount",
                 transaction_charge: "100"
               },
-              
+
               {
                 id: "RS_839AC07C3450A65004A0E11B83E22CA9",
                 transaction_charge_type: "flat_subaccount",
@@ -121,4 +124,4 @@ When splitting payment to multiple sub-accounts, Flutterwave makes it possible t
 </script>
 ```
 
-In the example above we assume you have calculated the total amount to go to each sub-account minus the fees processing and commission fees. From the implementation above, the sub-accounts would get what you passed as  `transaction_charge` after any transaction. Hence, 1000, 100 and 400 respectively. 
+In the example above we assume that you have calculated the total amount for each sub-account and have substracted the processing and commission fees. From the implementation above, the sub-accounts would get what you passed as `transaction_charge` after any transaction. Hence, 1000, 100 and 400 respectively.
