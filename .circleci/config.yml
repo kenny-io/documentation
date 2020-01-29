@@ -2,6 +2,10 @@ version: "2"
 jobs:
     build:
         docker:
-            - image: circleci/ruby:2.4.1
+            - image: circleci/node:9.9.0
         steps:
             - checkout
+            - run:
+                name: Github Fetch Content
+                command: |
+                    npm run push
