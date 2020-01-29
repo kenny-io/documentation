@@ -1,8 +1,8 @@
-## How subscription webhooks work
+# How subscription webhooks work
 
 With webhooks, your application can receive notifications should a recurring subscription succeed on your Rave account. Think of a webhook as an inbox which Rave sends a message to each time an event happens in your Rave account. Events are not limited to just subscriptions, they can include any time a customer files for a chargeback, a customer's bank confirms their intention to pay you or even a customer signing up on your application. Technically, a webhook is just a server-side script which when created, handles any event you specify on your dashboard.
 
-**When to use webhooks**
+### When to use webhooks
 
 Webhooks can be used for all kinds of payment methods, card, account, USSD, Mpesa, and Ghana Mobile money.
 If you use Rave to accept alternate payment methods like USSD, Mpesa, and Ghana mobile money, it is best practice to use webhooks so that your integration can be notified about changes the status of the payment once it is completed. This is because these payment methods are asynchronous and responses only come once the customer has completed the payment on their device.
@@ -17,17 +17,15 @@ You might also use webhooks to:
 
 In such cases we advise that developers set up a re-query service that goes to poll for the transaction status at regular intervals e.g. `every hour` using the [Verify Payment](https://developer.flutterwave.com/docs/status-check) endpoint, till a successful or failed response is returned.
 
-
-**Sample Transaction Payload**
+### Sample Transaction Payload
 
 On Rave, webhooks can be configured for transactions. When a transaction is completed, a POST HTTP request is sent to the URL you have configured. The HTTP payload will contain:
 
-
-**Hook Structure**
+#### Hook Structure
 
 The hook request structure is consistent across the board, but you can differentiate the event type using the `event.type` parameter returned. See the list of possible values for the parameter below:
 
-Card Payments:  `CARD_TRANSACTION`
+Card Payments: `CARD_TRANSACTION`
 
 ```python
 
@@ -63,7 +61,7 @@ Card Payments:  `CARD_TRANSACTION`
 
 ```
 
-Recurring Card Payments:  `CARD_TRANSACTION`
+Recurring Card Payments: `CARD_TRANSACTION`
 
 ```python
 
@@ -99,7 +97,7 @@ Recurring Card Payments:  `CARD_TRANSACTION`
 
 ```
 
-Account/ACH:  `ACCOUNT_TRANSACTION`
+Account/ACH: `ACCOUNT_TRANSACTION`
 
 ```python
 
@@ -170,7 +168,7 @@ Ghana Mobile Money: `MOBILEMONEYGH_TRANSACTION`
 
 ```
 
-M-Pesa Payments:  `MPESA_TRANSACTION`
+M-Pesa Payments: `MPESA_TRANSACTION`
 
 ```python
 
@@ -232,7 +230,7 @@ Payouts: `Transfer`
 
 ```
 
-Pay with Bank Transfer:  `BANK_TRANSFER_TRANSACTION`
+Pay with Bank Transfer: `BANK_TRANSFER_TRANSACTION`
 
 ```python
 
@@ -269,8 +267,7 @@ Pay with Bank Transfer:  `BANK_TRANSFER_TRANSACTION`
 
 **How to setup webhooks on your dashboard.**
 
-Click on  `Settings`  then navigate to  `Webhooks`  to set up a webhook on your dashboard. Once on the webhook page, input your webhook URL and its secret hash then save it.
+Click on `Settings` then navigate to `Webhooks` to set up a webhook on your dashboard. Once on the webhook page, input your webhook URL and its secret hash then save it.
 &nbsp;
 
 <img src="https://res.cloudinary.com/fullstackmafia/image/upload/v1576441165/image_preview_15_gwursd.png" />
-
