@@ -8,4 +8,5 @@ jobs:
             - run:
                 name: Github Fetch Content
                 command: |
+                    npm install
                     npm run push
