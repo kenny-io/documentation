@@ -72,6 +72,11 @@
         "title": "Transfer Features (node).",
         "identifier": "node",
         "url": "/node/transfers/transfer_features.md"
+      },
+      {
+        "title": "Test File (node).",
+        "identifier": "node",
+        "url": "/node/transfers/testfile.md"
       }
     ],
     "python": [

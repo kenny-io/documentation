@@ -19,7 +19,7 @@ This file is just to test the proposed new flow where we have code snippet tabs.
 
 <div id="Paris" class="tabcontent">
   <h3>Paris</h3>
-  <p>Paris is the capital of France.</p> 
+  <p>Paris is the capital of France.</p>
 </div>
 
 <div id="Tokyo" class="tabcontent">
