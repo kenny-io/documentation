@@ -7,7 +7,7 @@ This file is just to test the proposed new flow where we have code snippet tabs.
 <p>Click on the buttons inside the tabbed menu:</p>
 
 <div class="tab">
-  <button class="tablinks" onclick="openCity(event, 'London')">London</button>
+  <button id="defaultOpen" class="tablinks" onclick="openCity(event, 'London')">London</button>
   <button class="tablinks" onclick="openCity(event, 'Paris')">Paris</button>
   <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button>
 </div>
@@ -15,6 +15,7 @@ This file is just to test the proposed new flow where we have code snippet tabs.
 <div id="London" class="tabcontent">
   <h3>London</h3>
   <p>London is the capital city of England.</p>
+  <p>Welcome to london!</p>
 </div>
 
 <div id="Paris" class="tabcontent">
