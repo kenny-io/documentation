@@ -14,16 +14,15 @@ This file is just to test the proposed new flow where we have code snippet tabs.
 
 <div id="node" class="tabcontent">
   <h3>Node</h3>
-  <p>Node code snippets</p>
-  <p>Welcome to Node!</p>
+  <pre>Node code snippets</pre>
 </div>
 
 <div id="php" class="tabcontent">
   <h3>PHP</h3>
-  <p>PHP code snippets.</p>
+  <pre>PHP code snippets.</pre>
 </div>
 
 <div id="python" class="tabcontent">
   <h3>Python</h3>
-  <p>Python code snippets</p>
+  <pre>Python code snippets</pre>
 </div>
