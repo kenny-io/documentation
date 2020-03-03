@@ -7,23 +7,23 @@ This file is just to test the proposed new flow where we have code snippet tabs.
 <p>Click on the buttons inside the tabbed menu:</p>
 
 <div class="tab">
-  <button id="defaultOpen" class="tablinks" onclick="openCity(event, 'London')">London</button>
-  <button class="tablinks" onclick="openCity(event, 'Paris')">Paris</button>
-  <button class="tablinks" onclick="openCity(event, 'Tokyo')">Tokyo</button>
+  <button class="tablinks">Node</button>
+  <button class="tablinks">PHP</button>
+  <button class="tablinks">Python</button>
 </div>
 
-<div id="London" class="tabcontent">
-  <h3>London</h3>
-  <p>London is the capital city of England.</p>
-  <p>Welcome to london!</p>
+<div id="node" class="tabcontent">
+  <h3>Node</h3>
+  <p>Node code snippets</p>
+  <p>Welcome to Node!</p>
 </div>
 
-<div id="Paris" class="tabcontent">
-  <h3>Paris</h3>
-  <p>Paris is the capital of France.</p>
+<div id="php" class="tabcontent">
+  <h3>PHP</h3>
+  <p>PHP code snippets.</p>
 </div>
 
-<div id="Tokyo" class="tabcontent">
-  <h3>Tokyo</h3>
-  <p>Tokyo is the capital of Japan.</p>
+<div id="python" class="tabcontent">
+  <h3>Python</h3>
+  <p>Python code snippets</p>
 </div>
