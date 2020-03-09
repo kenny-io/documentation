@@ -11,8 +11,6 @@ Rave helps you collect payments recurrently from your customers using a payment 
 
 When you have created a payment plan, you can subscribe a customer to it by simply passing the `plan ID` in your request to charge the customers card. Here's a sample implementation to create a payment plan:
 
-Node
-
 ```javascript
 var request = require("request");
 
@@ -37,19 +35,7 @@ request.post(
 );
 ```
 
-PHP
-
-```php
-// PHP Code
-```
-
-Python
-
-```py
-// Python Code
-```
-
-#### Response
+### Response
 
 Here's a sample response for the above request:
 
@@ -70,7 +56,6 @@ Here's a sample response for the above request:
   }
 }
 ```
-
 
 The planID in the response above can be used in any charge request to subscribe customers to this payment plan.
 
@@ -118,7 +103,7 @@ function payWithRave() {
 }
 ```
 
-#### Sample response
+### Sample response
 
 Here's a sample success response for the payment function above after processing:
 
@@ -197,7 +182,7 @@ request(options, function(error, response, body) {
 });
 ```
 
-#### Response
+### Response
 
 This is the successful response structure for the above request:
 

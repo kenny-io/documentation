@@ -118,81 +118,66 @@
       {
         "title": "Overview (php)",
         "identifier": "php",
-        "url": "/php/transfers/overview.md"
+        "url": "/php/subscriptions/overview.md"
       },
       {
-        "title": "Quick Start (php)",
+        "title": "Quickstart (php)",
         "identifier": "php",
-        "url": "/node/transfers/quickstart.md"
+        "url": "/php/subscriptions/quickstart.md"
       },
       {
-        "title": "Create a Payment Plan (php)",
+        "title": "Managing Subscriptions (php)",
         "identifier": "php",
-        "url": "/node/transfers/quickstart.md"
+        "url": "/php/subscriptions/managing_subscriptions.md"
       },
       {
-        "title": "Charge a Subscription (php)",
+        "title": "Setting Up Subscriptions via API (php)",
         "identifier": "php",
-        "url": "/node/transfers/singletransfer.md"
-      },
-      {
-        "title": "Going Live (php).",
-        "identifier": "php",
-        "url": "/node/transfers/goinglive.md"
+        "url": "/php/subscriptions/setting_up_api_subscriptions.md"
       }
     ],
     "node": [
       {
         "title": "Overview (node)",
         "identifier": "node",
-        "url": "/node/transfers/overview.md"
+        "url": "/node/subscriptions/overview.md"
       },
       {
-        "title": "Quick Start (node)",
+        "title": "Quickstart (node)",
         "identifier": "node",
-        "url": "/node/transfers/quickstart.md"
+        "url": "/node/subscriptions/quickstart.md"
       },
       {
-        "title": "Create a payment plan (node)",
+        "title": "Managing Subscriptions (node)",
         "identifier": "node",
-        "url": "/node/transfers/quickstart.md"
+        "url": "/node/subscriptions/managing_subscriptions.md"
       },
       {
-        "title": "Charge a subscription (node)",
+        "title": "Setting Up Subscriptions via API (node)",
         "identifier": "node",
-        "url": "/node/transfers/singletransfer.md"
-      },
-      {
-        "title": "Going Live (node).",
-        "identifier": "node",
-        "url": "/node/transfers/goinglive.md"
+        "url": "/node/subscriptions/setting_up_api_subscriptions.md"
       }
     ],
     "python": [
       {
         "title": "Overview (python)",
         "identifier": "python",
-        "url": "/node/transfers/overview.md"
+        "url": "/python/subscriptions/overview.md"
       },
       {
-        "title": "Quick Start (python)",
+        "title": "Quickstart (python)",
         "identifier": "python",
-        "url": "/node/transfers/quickstart.md"
+        "url": "/python/subscriptions/quickstart.md"
       },
       {
-        "title": "Create a payment plan (python)",
+        "title": "Managing Subscriptions (python)",
         "identifier": "python",
-        "url": "/node/transfers/quickstart.md"
+        "url": "/python/subscriptions/managing_subscriptions.md"
       },
       {
-        "title": "Charge a subscription (python)",
+        "title": "Setting Up Subscriptions via API (python)",
         "identifier": "python",
-        "url": "/node/transfers/singletransfer.md"
-      },
-      {
-        "title": "Going Live (python).",
-        "identifier": "python",
-        "url": "/node/transfers/goinglive.md"
+        "url": "/python/subscriptions/setting_up_api_subscriptions.md"
       }
     ]
   },

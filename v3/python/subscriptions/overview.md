@@ -34,40 +34,24 @@ print(res)
 
 ### Sample response
 
-If the request above is successful, you can expect he following response:
+Here's a sample response for the request above:
 
-```python
+```json
 {
-  'error': False,
-  'returnedData': {
-    'status': 'success',
-    'message': 'SUBSCRIPTIONS-FETCHED',
-    'data': {
-      'page_info': {
-        'total': 0,
-        'current_page': 0,
-        'total_pages': 0
+  "error": False,
+  "returnedData": {
+    "status": "success",
+    "message": "SUBSCRIPTIONS-FETCHED",
+    "data": {
+      "page_info": {
+        "total": 0,
+        "current_page": 0,
+        "total_pages": 0
       },
-      'plansubscriptions': []
+      "plansubscriptions": []
     }
   }
 }
-```
-
-This call could potentially raise a `PlanStatusError` if there was a problem processing your transaction. The `PlanStatusError` would contain some more information about your transaction.
-
-You can handle the error like this:
-
-```python
-from rave_python
-import Rave, Misc, RaveExceptions
-rave = Rave("YOUR_PUBLIC_KEY", "YOUR_SECRET_KEY", usingEnv = False)
-try:
-res = rave.Subscriptions.allSubscriptions()
-print(res)
-except RaveExceptions.PlanStatusError as e:
-  print(e.err["errMsg"])
-print(e.err["flwRef"])
 ```
 
 ## Fetch a subscription
@@ -87,38 +71,33 @@ print(res)
 
 ### Sample response
 
-```python
+Here's what a response from this call would look like:
+
+```json
 {
-  'error': False,
-  'returnedData': {
-    'status': 'success',
-    'message': 'SUBSCRIPTIONS-FETCHED',
-    'data': {
-      'page_info': {
-        'total': 0,
-        'current_page': 0,
-        'total_pages': 0
-      },
-      'plansubscriptions': []
-    }
+  "status": "success",
+  "message": "SUBSCRIPTIONS-FETCHED",
+  "data": {
+    "page_info": {
+      "total": 1,
+      "current_page": 1,
+      "total_pages": 1
+    },
+    "plansubscriptions": [
+      {
+        "id": 6107,
+        "amount": 5000,
+        "customer": {
+          "id": 163856203,
+          "customer_email": "me@example.com"
+        },
+        "plan": 11401,
+        "status": "active",
+        "date_created": "2020-01-29T14:11:12.000Z"
+      }
+    ]
   }
 }
-```
-
-This call could potentially raise a `PlanStatusError` if there was a problem processing your transaction. The `PlanStatusError` would contain some more information about your transaction.
-
-You can handle the error like this:
-
-```python
-from rave_python
-import Rave, Misc, RaveExceptions
-rave = Rave("YOUR_PUBLIC_KEY", "YOUR_SECRET_KEY", usingEnv = False)
-try:
-res = rave.Subscriptions.fetchSubscription()
-print(res)
-except RaveExceptions.PlanStatusError as e:
-  print(e.err["errMsg"])
-print(e.err["flwRef"])
 ```
 
 ## Cancel a subscription
@@ -137,20 +116,24 @@ res = rave.Subscriptions.cancelSubscription(900)
 print(res)
 ```
 
-This call could potentially raise a `PlanStatusError` if there was a problem processing your transaction. The `PlanStatusError` would contain some more information about your transaction.
+### Sample response
 
-You can handle the error like this:
-
-```python
-from rave_python
-import Rave, Misc, RaveExceptions
-rave = Rave("YOUR_PUBLIC_KEY", "YOUR_SECRET_KEY", usingEnv = False)
-try:
-res = rave.Subscriptions.cancelSubscription(900)
-print(res)
-except RaveExceptions.PlanStatusError as e:
-  print(e.err["errMsg"])
-print(e.err["flwRef"])
+```json
+{
+  "status": "success",
+  "message": "SUBSCRIPTION-CANCELLED",
+  "data": {
+    "id": 6107,
+    "amount": 5000,
+    "customer": {
+      "id": 163856203,
+      "customer_email": "me@example.com"
+    },
+    "plan": 11401,
+    "status": "cancelled",
+    "date_created": "2020-01-29T14:11:12.000Z"
+  }
+}
 ```
 
 ## Activate a subscription
@@ -166,22 +149,6 @@ import Rave, Misc, RaveExceptions
 rave = Rave("YOUR_PUBLIC_KEY", "YOUR_SECRET_KEY", usingEnv = False)
 res = rave.Subscriptions.activateSubscription(900)
 print(res)
-```
-
-This call could potentially raise a `PlanStatusError` if there was a problem processing your transaction. The `PlanStatusError` would contain some more information about your transaction.
-
-You can handle the error like this:
-
-```python
-from rave_python
-import Rave, Misc, RaveExceptions
-rave = Rave("YOUR_PUBLIC_KEY", "YOUR_SECRET_KEY", usingEnv = False)
-try:
-res = rave.Subscriptions.activateSubscription(900)
-print(res)
-except RaveExceptions.PlanStatusError as e:
-  print(e.err["errMsg"])
-print(e.err["flwRef"])
 ```
 
 Below is the complete subscription flow for handling subscriptions:
@@ -202,4 +169,20 @@ except RaveExceptions.PlanStatusError as e:
 
 except RaveExceptions.ServerError as e:
   print(e.err)
+```
+
+These calls could potentially raise a `PlanStatusError` if there was a problem processing any of your transactions. The `PlanStatusError` would contain some more information about your transaction.
+
+You can handle the error like this:
+
+```python
+from rave_python
+import Rave, Misc, RaveExceptions
+rave = Rave("YOUR_PUBLIC_KEY", "YOUR_SECRET_KEY", usingEnv = False)
+try:
+res = rave.Subscriptions.allSubscriptions()
+print(res)
+except RaveExceptions.PlanStatusError as e:
+  print(e.err["errMsg"])
+print(e.err["flwRef"])
 ```
