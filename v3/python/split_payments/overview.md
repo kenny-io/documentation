@@ -4,26 +4,24 @@ Flutterwave's split payment feature allows you split a transaction between your 
 Flutterwave can automatically split the settlement such that the vendor's account is credited and the platform owner gets his own commission credited as well.
 When using this feature the marketplace owner is responsible for vetting the merchant's signed up under their marketplace, this means that disputes and chargebacks would be logged against the marketplace owner.
 
-
-**Flow**
+### Flow
 
 <img src='https://res.cloudinary.com/fullstackmafia/image/upload/v1576435959/image_preview_6_mvzde4.png' />
 
-**Use Cases**
+### Use Cases
 
 - Building a ride sharing platform: You can pay all the drivers who use your ride sharing platform using this feature.
 - Building a gig platform: Settling multiple freelancers on your platform.
 - Building an e-commerce marketplace like Shopify, Jumia: You can settle the funds of multiple traders on your e-commerce store with this feature.
-- Booking platform like OpenTable. 
+- Booking platform like OpenTable.
 - Invoicing solutions: Settling multiple invoices at the same time.
-- School management system:  Handle expenses like teachers salaries and payments to multiple vendors.
+- School management system: Handle expenses like teachers salaries and payments to multiple vendors.
 
+## Getting Started
 
-**Getting Started**
+The first step to getting started would be to set up a subaccount. This can be done either via your Flutterwave dashboard or by making a POST request to an API endpoint.
 
-The first step to getting started would be to set up a subaccount. This can be done either via your Flutterwave dashboard or by making a  POST request to an API endpoint.
-
-**Flutterwave Dashboard**
+### Flutterwave Dashboard
 
 <img src="https://res.cloudinary.com/fullstackmafia/image/upload/v1576436334/image_preview_7_zsnafk.png" />
 &nbsp;
@@ -34,16 +32,15 @@ The first step to getting started would be to set up a subaccount. This can be d
 <img src="https://res.cloudinary.com/fullstackmafia/image/upload/v1576436334/image_preview_9_aqake0.png"/>
 &nbsp;
 
-
-**Request to an API endpoint**
+### Request to an API endpoint
 
 ```python
 
     from rave_python import Rave
     from rave_python import RaveExceptions
-    
+
     rave = Rave("YOUR_PUBLIC_KEY", "YOUR_SECRET_KEY", usingEnv = False)
-    
+
     payload = {
             "account_bank": "044",
             "account_number": "0690000031",
@@ -56,8 +53,8 @@ The first step to getting started would be to set up a subaccount. This can be d
         "split_value": 3000
             "meta": [{"metaname": "MarketplaceID", "metavalue": "ggs-920900"}]
     }
-    
-    try: 
+
+    try:
         res = rave.SubAccount.createSubaccount(payload)
         print(res)
     except RaveExceptions.SubaccountCreationError as e:

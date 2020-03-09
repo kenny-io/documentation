@@ -3,7 +3,7 @@
 With Flutterwave, merchants can resell payment services such as airtime in countries like Nigeria, Ghana and USA. They can also resell cable television (DStv) in Nigeria and Ghana. For every successful airtime sale, a merchant makes a 3% commission from the transaction. They also make a commission of NGN 30 for every other successful bill transaction. To use our bill payment APIs you would need to follow the steps outlined below:
 
 1. Create a [free Flutterwave account](https://dashboard.flutterwave.com/signup) to get access to our API's. You can switch your account between `test` and `live` modes (for use in development and production) respectively.
-2. Navigate to the `Transfers` page on your dashboard and top up your balance using the Top up balance option.
+2. Navigate to the **Transfers** page on your dashboard and top up your balance using the Top up balance option.
 3. Ensure your available balance is funded before making use of the APIs.
 
 ## Available Bill Services
@@ -20,40 +20,39 @@ With Flutterwave, merchants can resell payment services such as airtime in count
 
 ## Request Structure
 
-This is a sample request format for calling the bills payment API for the `fly_buy` service. The request will defer depending on the service.
+This is a sample request structure for calling the bills payment API for the `fly_buy` service. The request will defer depending on the service of choice.
 
-```javascript
-var request = require("request");
+```python
+import requests
 
-request.post(
-  " https://api.ravepay.co/v2/services/confluence",
-  {
-    json: {
-      secret_key: "<YOUR_SECRET_KEY>",
-      service: "fly_buy",
-      service_method: "post",
-      service_version: "v1",
-      service_channel: "rave",
-      service_payload: {
-        Country: "NG",
-        CustomerId: "+23490803840303",
-        Reference: "9300049404444",
-        Amount: 500,
-        RecurringType: 0,
-        IsAirtime: true,
-        BillerName: "AIRTIME"
-      }
-    }
-  },
-  (error, response, body) => {
-    if (error) {
-      console.error(error);
-      return;
-    }
-    console.log(`statusCode: ${response.statusCode}`);
-    console.log(body);
+url = "https://api.ravepay.co/v2/services/confluence"
+
+querystring = {
+  "secret_key": "YOUR SECRET KEY",
+  "service": "fly_buy",
+  "service_method": "post",
+  "service_version": "v1",
+  "service_channel": "rave",
+  "service_payload": {
+    "Country": "NG",
+    "CustomerId": "+23490803840303",
+    "Reference": "9300049404444",
+    "Amount": 500,
+    "RecurringType": 0,
+    "IsAirtime": true,
+    "BillerName": "AIRTIME"
   }
-);
+}
+
+headers = {
+  'content-type': 'application/json'
+}
+try:
+res = requests.request("POST", url, headers = headers, params = querystring)
+print(res.text)
+except requests.exceptions.RequestException as e:
+  print(e)
+
 ```
 
 The request above will buy airtime worth of NGN500 for the mobile number specified in the `customerId` parameter.
@@ -102,7 +101,7 @@ These are the available services on Flutterwave with their respective HTTP metho
 | :--------------------- | :----- | :------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `fly_buy`              | POST   | This allows you to buy airtime or DSTV bill services. When you pass this as your `service` in the request, you would need to pass a `service_payload` as well. |
 | `fly_buy_bulk`         | POST   | This allows you to buy bulk airtime and DSTV bill services.                                                                                                    |
-| `fly_recurring`        | POST   | This allows you to retrieve active recurring airtime and DSTV bill services.                                                                                   |
+| `fly_recurring`        | GET    | This allows you to retrieve active recurring airtime and DSTV bill services.                                                                                   |
 | `fly_recurring_cancel` | POST   | This allows you to cancel recurring airtime and DSTV bill services.                                                                                            |
 | `fly_history`          | POST   | This allows you to retrieve a history of all purchased bill services including commission earned.                                                              |
 | `fly_requery`          | POST   | This allows you get the status of a bill purchase.                                                                                                             |

@@ -9,38 +9,37 @@ This document covers the implementation examples, request parameter definitions 
 
 You can purchase a single bill service such as buy airtime, subsribe on DStv, and so on through the `fly_buy` service. When you pass this in your POST request, also pass in a service payload as well. Below is a code sample depicting how you can do this:
 
-```javascript
-var request = require("request");
+```python
+import requests
 
-request.post(
-  " https://api.ravepay.co/v2/services/confluence",
-  {
-    json: {
-      secret_key: "<YOUR_SECRET_KEY>",
-      service: "fly_buy",
-      service_method: "post",
-      service_version: "v1",
-      service_channel: "rave",
-      service_payload: {
-        Country: "NG",
-        CustomerId: "+23490803840303",
-        Reference: "9300049404444",
-        Amount: 500,
-        RecurringType: 0,
-        IsAirtime: true,
-        BillerName: "AIRTIME"
-      }
-    }
-  },
-  (error, response, body) => {
-    if (error) {
-      console.error(error);
-      return;
-    }
-    console.log(`statusCode: ${response.statusCode}`);
-    console.log(body);
+url = "https://api.ravepay.co/v2/services/confluence"
+
+querystring = {
+  "secret_key": "YOUR SECRET KEY",
+  "service": "fly_buy",
+  "service_method": "post",
+  "service_version": "v1",
+  "service_channel": "rave",
+  "service_payload": {
+    "Country": "NG",
+    "CustomerId": "+23490803840303",
+    "Reference": "9300049404444",
+    "Amount": 500,
+    "RecurringType": 0,
+    "IsAirtime": true,
+    "BillerName": "AIRTIME"
   }
-);
+}
+
+headers = {
+  'content-type': 'application/json'
+}
+try:
+res = requests.request("POST", url, headers = headers, params = querystring)
+print(res.text)
+except requests.exceptions.RequestException as e:
+  print(e)
+
 ```
 
 ### The single bill `service_payload`parameters
@@ -85,93 +84,62 @@ Below is an example of the response you'll get if your request is successful:
 }
 ```
 
-### Error cases
-
-Two scenarios could lead to an error message being returned
-
-1.  An invalid customer ID
-
-Here's a sample response for when this is the case:
-
-```javascript
-{
- "Status": "fail",
- "Message": "Invalid customer id",
- "Code": "903",
- "CustomerReference": "+2339026420185"
-}
-```
-
-2.  An invalid phone number:
-3.  ```javascript
-    {
-      "Status": "fail",
-      "Message": "Invalid Phone",
-      "Code": "905",
-      "CustomerReference": "+190830030"
-    }
-    ```
-
-````
-
-
 ## Purchasing a bill service in bulk (`fly_buy_bulk`)
 
-For you a developer/merchant, you may want to purchase certain services in bulk to resell. Flutterwave enables this via the `fly_buy_bulk`  service. This is handy for merchants who may want to provide value to multiple customers at once. Here's a sample request depicting how the request is made:
+For you a developer/merchant, you may want to purchase certain services in bulk to resell. Flutterwave enables this via the `fly_buy_bulk` service. This is handy for merchants who may want to provide value to multiple customers at once. Here's a sample request depicting how the request is made:
 
-```javascript
-var request = require('request')
+```python
+import requests
 
-request.post(' https://api.ravepay.co/v2/services/confluence', {
-    json: {
-        "secret_key": "<YOUR_SECRET_KEY>",
-        "service": "fly_buy_bulk",
-        "service_method": "post",
-        "service_version": "v1",
-        "service_channel": "rave",
-        "service_payload": {
-            "BatchReference": "batch-rave-150928302799933922",
-            "CallBackUrl": "https://rave-webhook.herokuapp.com/newregistration",
-            "Requests": [{
-                    "Country": "NG",
-                    "CustomerId": "+23490803840303",
-                    "Amount": 500,
-                    "RecurringType": 0,
-                    "IsAirtime": true,
-                    "BillerName": "AIRTIME",
-                    "Reference": "9300049404444"
-                },
-                {
-                    "Country": "GH",
-                    "CustomerId": "+233276081163",
-                    "Amount": 500,
-                    "RecurringType": 0,
-                    "IsAirtime": true,
-                    "BillerName": "AIRTIME",
-                    "Reference": "9300049405555"
-                },
-                {
-                    "Country": "US",
-                    "CustomerId": "+190830030",
-                    "Amount": 20,
-                    "RecurringType": 0,
-                    "IsAirtime": true,
-                    "BillerName": "AIRTIME",
-                    "Reference": "9300049406666"
-                }
-            ]
+url = "https://api.ravepay.co/v2/services/confluence"
+
+querystring = {
+    "secret_key": "YOUR SECRET KEY",
+    "service": "fly_buy_bulk",
+    "service_method": "post",
+    "service_version": "v1",
+    "service_channel": "rave",
+    "service_payload": {
+      "BatchReference": "batch-rave-150928302799933922",
+      "CallBackUrl": "https://rave-webhook.herokuapp.com/newregistration",
+      "Requests": [{
+          "Country": "NG",
+          "CustomerId": "+23490803840303",
+          "Amount": 500,
+          "RecurringType": 0,
+          "IsAirtime": true,
+          "BillerName": "AIRTIME",
+          "Reference": "9300049404444"
+        },
+        {
+          "Country": "GH",
+          "CustomerId": "+233276081163",
+          "Amount": 10,
+          "RecurringType": 0,
+          "IsAirtime": true,
+          "BillerName": "AIRTIME",
+          "Reference": "9300049405555"
+        },
+        {
+          "Country": "US",
+          "CustomerId": "+190830030",
+          "Amount": 20,
+          "RecurringType": 0,
+          "IsAirtime": true,
+          "BillerName": "AIRTIME",
+          "Reference": "9300049406666"
         }
+      ]
     }
-}, (error, response, body) => {
-    if (error) {
-        console.error(error)
-        return
-    }
-    console.log(`statusCode: ${response.statusCode}`)
-    console.log(body)
-})
 
-````
+    headers = {
+      'content-type': 'application/json'
+    }
+    try: res = requests.request("POST", url, headers = headers, params = querystring)
+    print(res.text)
+    except requests.exceptions.RequestException as e: print(e)
+
+```
 
 The request above makes a bulk airtime purchase in Nigeria, Ghana and USA respectively.
 
@@ -197,8 +165,7 @@ The table below defines the parameters and descriptions of the `service_payload`
 | `BillerName`     | True     | Pass the following possible values based on the service being bought. `AIRTIME`, `DSTV`, `DSTV BOX OFFICE`.                                                                                                     |
 | `Reference`      | False    | This is a unique reference passed by the developer to identify transactions on their end.                                                                                                                       |
 
-## Sample Response
-
+##Sample Response
 Below is an example of the response you'll get if your request is successful:
 
 ```JSON

@@ -1,15 +1,17 @@
-# Set up subscription through our API
+# Set up subscriptions through our API
 
 Setting up subscriptions programmatically can be completed in the following steps below:
 
 - Create a payment plan
 - Initiate a subscription payment
 
-#### Create a payment plan
+### Create a payment plan
 
 Rave helps you collect payments recurrently from your customers using a payment plan. Payment plans allow you create a subscription for your customers.
 
 When you have created a payment plan, you can subscribe a customer to it by simply passing the `plan ID` in your request to charge the customers card. Here's a sample implementation to create a payment plan:
+
+Node
 
 ```javascript
 var request = require("request");
@@ -35,6 +37,18 @@ request.post(
 );
 ```
 
+PHP
+
+```php
+// PHP Code
+```
+
+Python
+
+```py
+// Python Code
+```
+
 #### Response
 
 Here's a sample response for the above request:
@@ -57,9 +71,10 @@ Here's a sample response for the above request:
 }
 ```
 
+
 The planID in the response above can be used in any charge request to subscribe customers to this payment plan.
 
-#### Initiate a subscription payment
+### Initiate a subscription payment
 
 You can now use the payment plan ID in the response above to perform subscription payments via any of our payment methods. Here's an implementation using our inline payment function:
 

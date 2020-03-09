@@ -6,32 +6,26 @@ Retrieving the details of a recurrent bill can be done by making a request to Fl
 
 Below is a code sample depicting how to do this:
 
-```php
-<?php
+```python
+import requests
 
-$url = 'https://api.ravepay.co/v2/services/confluence';
+url = "https://api.ravepay.co/v2/services/confluence"
 
-$ch = curl_init($url);
+querystring = {
+    "secret_key": "YOUR_SECRET_KEY",
+    "service": "fly_recurring",
+    "service_method": "get",
+    "service_version": "v1",
+    "service_channel": "rave",
+}
 
- $jsonData = array(
-     'secret_key' => 'YOUR_SECRET_KEY',
-     'service_method' => 'get',
-     'service' => 'fly_recurring',
-     'service_version' => 'v1',
-     'service_channel' => 'rave',
- );
+    headers = {
+      'content-type': 'application/json'
+    }
+    try: res = requests.request("POST", url, headers = headers, params = querystring)
+    print(res.text)
+    except requests.exceptions.RequestException as e: print(e)
 
-$jsonDataEncoded = json_encode($jsonData);
-
-curl_setopt($ch, CURLOPT_POST, 1);
-
-curl_setopt($ch, CURLOPT_POSTFIELDS, $jsonDataEncoded);
-
-curl_setopt($ch, CURLOPT_HTTPHEADER, array('Content-Type: application/json'));
-
-$result = curl_exec($ch);
-
-echo $result;
 ```
 
 ### Sample Response

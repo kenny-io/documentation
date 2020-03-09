@@ -1,4 +1,4 @@
-# Retrieve details of a bill service
+# Retrieve details of a recurring bill service
 
 When you purchase a recurring bill service, you have the ability to retrieve its details. This is particularly useful for merchants who offer bill payments services in bulk. When users lodge complaints related to a recurring bill, all you need to do is retrieve the details of that bill from Flutterwave and clarify any confusions for your users.
 

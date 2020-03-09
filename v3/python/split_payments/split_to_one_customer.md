@@ -6,9 +6,9 @@ You can split payments to one customer by passing the customer's subaccount ID a
 
     from rave_python
     import Rave, Misc, RaveExceptions
-    
+
     rave = Rave("<YOUR PUBLIC KEY>", "<YOUR SECRET KEY>", usingEnv = False)
-    
+
     payload = {
       "amount": "10000",
       "country": "NG",
@@ -29,32 +29,32 @@ You can split payments to one customer by passing the customer's subaccount ID a
         "id": "RS_E5F7B53C26CB9CEAB9C3DD8DECF0B039",
         "transaction_split_ratio": "2"
       }],
-    
+
       "meta": [{
         "metaname": "storeID",
         "metavalue": "AP1234"
       }]
     }
-    
+
     try:
     res = rave.Account.charge(payload)
     if res["authUrl"]:
       print(res["authUrl"])
-    
+
     elif res["validationRequired"]:
       rave.Account.validate(res["flwRef"], "12345")
-    
+
     res = rave.Account.verify(res["txRef"])
     print(res)
-    
+
     except RaveExceptions.AccountChargeError as e:
       print(e.err)
     print(e.err["flwRef"])
-    
+
     except RaveExceptions.TransactionValidationError as e:
       print(e.err)
     print(e.err["flwRef"])
-    
+
     except RaveExceptions.TransactionVerificationError as e:
       print(e.err["errMsg"])
     print(e.err["txRef"])
@@ -65,10 +65,10 @@ Below are the parameters involved when splitting payments to a subaccount:
 
 ## Parameters
 
-| Parameter 	| Required 	| Description 	|
-|---------------------------	|------------------------	|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------	|
-| `id` 	| True <br> (`String`) 	| This is the ID of the subaccount, you can get it from your dashboard e.g. `RS_D43E65859C3138BECD103C4175B4B839` 	|
-| `meta` 	| True <br> (`String`) 	| This is the data that describes and gives information about the subaccount 	|
+| Parameter | Required             | Description                                                                                                     |
+| --------- | -------------------- | --------------------------------------------------------------------------------------------------------------- |
+| `id`      | True <br> (`String`) | This is the ID of the subaccount, you can get it from your dashboard e.g. `RS_D43E65859C3138BECD103C4175B4B839` |
+| `meta`    | True <br> (`String`) | This is the data that describes and gives information about the subaccount                                      |
 
 **Using percentages as transaction charges**
 
