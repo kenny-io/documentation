@@ -5,24 +5,45 @@ const models = require('./models');
 const Op = models.Sequelize.Op;
 
 const contents = function(paths){
+ 
     return paths.forEach( async (element) => {
         if(element.url){
+          try{
             let response  = await fetch(`https://api.github.com/repos/anjolabassey/test-docs/contents/v3${element.url}`);
             let data = await response.json();
             let path = data.path;
             let b64string = data.content;
-            models.Algolia.create({
-                path,
-                content:b64string,
-               
-            }).then(data =>  {
-                console.log(data);
+
+            models.Algolia.findAll({
+              where: { path }
+            }).then( result => {
+              if(result.length === 0){
+                  models.Algolia.create({
+                    path,
+                    content:b64string,
+      
+                  }).then(data =>  {
+                      console.log("created", data);
+                  })
+              }else{
+                models.Algolia.update({ content: b64string }, {
+                  where: { path }
+                }).then(update => {
+                  console.log(update)
+                })
+              }
             })
-            
+
+          }catch(error){
+              console.log(error)
+          }
+          
+           
+
         }
-        
+
     });
- 
+
 }
 
 contents(
@@ -127,5 +148,10 @@ contents(
             "identifier": "php",
             "url": "/php/transfers/overview.md"
           },
-    ] 
+          {
+            "title": "Test File (node).",
+            "identifier": "node",
+            "url": "/node/transfers/testfile.md"
+          }
+    ]
 )
