@@ -34,7 +34,8 @@ When you've selected and uploaded a CSV file, you should see all the details dis
 
 Voila!!! You've successfully made a bulk transfer.
 
-###Making a bulk transfer through our API's
+### Make bulk transfer through our API
+
 Flutterwave allows you to make a bulk transfer through our API's. You can do this by making a post request to our bulk transfer endpoint. To do this you need to pass your secret key along with the transfer details in your request object. Here's a sample request:
 
 ```javascript
@@ -72,7 +73,8 @@ request.post('https://api.ravepay.co/v2/gpx/transfers/create_bulk
 })
 ```
 
-###Sample response
+#### Sample response
+
 When the request is processed successfully, Flutterwave will return a response in this format to provide more information about the bulk transfer:
 
 ```json
@@ -87,7 +89,8 @@ When the request is processed successfully, Flutterwave will return a response i
 }
 ```
 
-###Retreive status of bulk transfer
+### Retreive status of bulk transfer
+
 To confirm the status of a bulk transfer, you need to make a request with your secret key and the `id` returned in your bulk transfer call. Here's a sample request to verify the status of a bulk transfer:
 
 ```javascript
@@ -110,7 +113,8 @@ request(options, function(error, response, body) {
 });
 ```
 
-###Request parameters
+### Request parameters
+
 The table below defines the parameters and descriptions of the request object we constructed above to fetch the status of a bulk transfer.
 
 | Parameter  | Required | Description                                                                                                                                       |
@@ -118,7 +122,8 @@ The table below defines the parameters and descriptions of the request object we
 | `seckey`   | True     | This is your merchant secret key, see how to get your API keys from your dashboard [here](https://developer.flutterwave.com/reference#api-keys-1) |
 | `batch_id` | True     | This is the `id` returned in the Bulk Transfer call as `data.id`.                                                                                 |
 
-###Sample response
+### Sample response
+
 When the request is processed successfully, Flutterwave will return a response in this format to provide more information about the status of the bulk transfer:
 
 ```json
